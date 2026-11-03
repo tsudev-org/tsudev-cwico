@@ -1,0 +1,47 @@
+# Danh sách loại trừ khi chuyển bản sao repo này sang máy khác:
+#
+#   rsync -az --exclude-from=.rsync-exclude <nguon>:projects/tsudev-cwico/ ~/projects/tsudev-cwico/
+#
+# ⚠️ ĐÂY KHÔNG PHẢI .gitignore. Đã kiểm ngày 03/11/2026: repo này KHÔNG có
+# file nào bị git bỏ qua mà phải đi theo. Toàn bộ nhóm ignore đều sinh lại được
+# (đã đối chiếu từng mục ở dưới). Nếu sau này thêm `.env` hay khoá ký nào, nó
+# phải được ghi vào ĐÂY dưới dạng ghi chú "phải đi theo", đừng để im lặng.
+#
+# Số đo ngày 03/11/2026: 4,3GB trên giấy -> 8,8MB thật sau khi loại.
+# Không có file này thì đây là đợt chuyển nhiều giờ qua wifi, hoàn toàn vô ích.
+
+# ── 4,1GB bản dựng Rust - chiếm 97% khối lượng. Dựng lại bằng `cargo build`.
+# Dùng cả hai mẫu: `/target` cho gốc, `target/` cho các crate con và src-tauri.
+/target/
+target/
+
+# ── Phụ thuộc Node của ui/ (135M). Dựng lại bằng `npm install`.
+node_modules/
+
+# ── Bản dựng Vite và cache.
+dist/
+dist-ssr/
+.vite/
+
+# ── Scaffolding do `tauri android/ios init` sinh ra. Sinh lại được.
+app/src-tauri/gen/
+
+# ── Bản sao của data/tweaks.json (ĐANG được git theo dõi). Đã đối chiếu byte
+# ngày 03/11/2026: giống hệt bản gốc. Sinh lại bằng:
+#   cd ui && npm run sync:data
+ui/public/tweaks.json
+
+# ── Cache Python của tools/
+__pycache__/
+*.pyc
+
+# ── Artifact đóng gói
+*.msi
+*.exe.bak
+Cargo.lock.bak
+
+# ── Log và trạng thái chạy của một máy cụ thể
+/logs/
+*.log
+*.cwico-transaction.json
+*.reg.bak
