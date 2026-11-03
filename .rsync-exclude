@@ -41,7 +41,13 @@ __pycache__/
 Cargo.lock.bak
 
 # ── Log và trạng thái chạy của một máy cụ thể
-/logs/
+#
+# ⚠️ KHÔNG loại cả `logs/`. `.gitignore` có `/logs/`, nhưng ba file trong đó
+# được thêm bằng `git add -f` và ĐANG ĐƯỢC THEO DÕI: `logs/STATE.md`,
+# `logs/LOCKS.md`, `logs/handover/.gitkeep`. Chúng là tài liệu phiên làm việc,
+# không phải log. Bản đầu của file này loại `/logs/` và phép kiểm "danh sách
+# loại trừ có làm rơi file nào trong git không" bắt được - đó là lý do phép
+# kiểm đó phải chạy lại sau MỖI lần repo đổi, không chỉ một lần lúc viết.
 *.log
 *.cwico-transaction.json
 *.reg.bak
