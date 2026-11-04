@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Everything the tsudev-cwico window is allowed to do. Deliberately minimal: the front end talks to the engine through this crate's own commands, not through general-purpose plugin permissions, so a compromised web view has no filesystem or shell access of its own. The updater permission is the one exception, and it only allows checking and installing a payload signed by the key in tauri.conf.json.",
+  "description": "Everything the tsudev-cwico window is allowed to do on every platform. Deliberately minimal: the front end talks to the engine through this crate's own commands, not through general-purpose plugin permissions, so a compromised web view has no filesystem or shell access of its own. The updater permission is the one exception and lives in updater.json, because the plugin that provides it is a Windows-only dependency.",
   "windows": [
     "main"
   ],
@@ -10,7 +10,6 @@
     "core:window:allow-start-dragging",
     "core:window:allow-minimize",
     "core:window:allow-toggle-maximize",
-    "core:window:allow-close",
-    "updater:default"
+    "core:window:allow-close"
   ]
 }

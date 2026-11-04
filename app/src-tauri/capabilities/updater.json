@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "updater",
+  "description": "Checking for and installing an update, allowed only on Windows. It permits nothing beyond installing a payload signed by the key in tauri.conf.json. This is a separate, platform-gated capability because tauri-plugin-updater is declared only under [target.'cfg(windows)'.dependencies] in Cargo.toml: a Linux dev build has no updater to permit, and naming the permission there makes the build script fail with 'Permission updater:default not found' before anything compiles.",
+  "platforms": [
+    "windows"
+  ],
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "updater:default"
+  ]
+}
