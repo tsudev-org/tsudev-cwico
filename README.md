@@ -17,7 +17,7 @@ Một sản phẩm của [tsudev](https://tsudev.com).
 [![Safety rules](https://img.shields.io/badge/safety%20rules-58-2482bd)](data/safety-db.json)
 [![Tests](https://img.shields.io/badge/tests-136-2482bd)](#tests)
 
-[tsudev.com](https://tsudev.com) · [Quick start](#quick-start) · [Safety model](#the-safety-model) · [Tiếng Việt](docs/README.vi.md)
+[Website](https://cwico.tsudev.com) · [tsudev.com](https://tsudev.com) · [Quick start](#quick-start) · [Safety model](#the-safety-model) · [Tiếng Việt](docs/README.vi.md)
 
 </div>
 
@@ -195,8 +195,8 @@ Before the first destructive step of any run:
 
 ### Use it
 
-Download the installer from [releases](https://github.com/tsudev-org/tsudev-cwico/releases),
-or:
+Download the installer from [cwico.tsudev.com](https://cwico.tsudev.com/tai-ve/) or
+[releases](https://github.com/tsudev-org/tsudev-cwico/releases), or:
 
 ```powershell
 winget install tsudev.cwico
