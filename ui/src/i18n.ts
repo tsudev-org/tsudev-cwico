@@ -123,6 +123,8 @@ const vi = {
   "about.rules": "quy tắc",
   "about.backupDir": "Thư mục sao lưu",
   "about.os": "Hệ điều hành",
+  "about.release": "Bản phát hành",
+  "about.arch": "Kiến trúc",
   "about.website": "Truy cập tsudev.com",
 
   "elevation.required": "Chưa có quyền Administrator",
@@ -290,6 +292,8 @@ const en: Record<TranslationKey, string> = {
   "about.rules": "rules",
   "about.backupDir": "Backup folder",
   "about.os": "Operating system",
+  "about.release": "Release",
+  "about.arch": "Architecture",
   "about.website": "Visit tsudev.com",
 
   "elevation.required": "Not running as Administrator",
@@ -376,12 +380,28 @@ export function formatBytes(locale: Locale, bytes: number | undefined): string {
   return `${formatted} ${units[unit]}`;
 }
 
-export function formatDateTime(locale: Locale, iso: string | undefined): string {
+const pad2 = (n: number) => String(n).padStart(2, "0");
+
+/**
+ * `HH:mm DD/MM/YYYY` in local time, in both languages - the date format is
+ * mandatory across the tsudev ecosystem (DESIGN_SYSTEM.md section 4), so it
+ * does not follow the locale the way `Intl` would ("9 thg 11, 2026").
+ */
+export function formatDateTime(_locale: Locale, iso: string | undefined): string {
   if (!iso) return "-";
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return iso;
-  return new Intl.DateTimeFormat(locale === "vi" ? "vi-VN" : "en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
+  return `${pad2(date.getHours())}:${pad2(date.getMinutes())} ${formatDate(date)}`;
+}
+
+/** `DD/MM/YYYY`. A bare `YYYY-MM-DD` is read as that calendar day, not as UTC midnight. */
+export function formatDate(value: string | Date | undefined): string {
+  if (!value) return "-";
+  if (typeof value === "string") {
+    const m = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (m) return `${m[3]}/${m[2]}/${m[1]}`;
+  }
+  const date = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(date.getTime())) return String(value);
+  return `${pad2(date.getDate())}/${pad2(date.getMonth() + 1)}/${date.getFullYear()}`;
 }

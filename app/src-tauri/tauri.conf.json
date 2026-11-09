@@ -13,7 +13,7 @@
     "withGlobalTauri": false,
     "windows": [
       {
-        "title": "tsudev-cwico \u2014 Windows Debloater",
+        "title": "tsudev-cwico - Windows Debloater",
         "width": 1280,
         "height": 820,
         "minWidth": 940,
@@ -51,10 +51,10 @@
       "../../data/safety-db.json": "data/safety-db.json",
       "../../data/tweaks.json": "data/tweaks.json"
     },
-    "copyright": "\u00a9 2026 tsudev \u2014 https://tsudev.com",
+    "copyright": "Copyright (c) 2026 tsudev",
     "category": "Utility",
     "shortDescription": "Deep Windows debloater and software removal toolkit",
-    "longDescription": "Scan every corner of Windows \u2014 installed programs, UWP/AppX packages, services, scheduled tasks and autostart entries \u2014 then remove what you do not need, safely. Every item is classified Safe, Caution or Critical; critical system components cannot be removed at all. A System Restore Point and .reg backups are taken before anything changes.",
+    "longDescription": "Scan every corner of Windows (installed programs, UWP/AppX packages, services, scheduled tasks and autostart entries), then remove what you do not need, safely. Every item is classified Safe, Caution or Critical; critical system components cannot be removed at all. A System Restore Point and .reg backups are taken before anything changes.",
     "publisher": "tsudev",
     "homepage": "https://tsudev.com",
     "windows": {

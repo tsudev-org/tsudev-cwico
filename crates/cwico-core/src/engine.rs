@@ -56,7 +56,9 @@ pub struct RunReport {
     pub dry_run: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub restore_point: Option<RestorePointInfo>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    /// Always serialised, even when empty: the front end types the report's
+    /// collections as required arrays (see `SoftwareItem::executables`).
+    #[serde(default)]
     pub registry_backups: Vec<RegistryBackup>,
     pub items: Vec<ItemOutcome>,
     pub succeeded: usize,
@@ -69,7 +71,9 @@ pub struct RunReport {
     pub transaction_log: Option<PathBuf>,
     /// Preamble problems that did not abort the run (e.g. registry backup
     /// failed for one key while the rest succeeded).
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    /// Always serialised, even when empty - a clean run has no warnings, and
+    /// the run panel maps over this list unconditionally.
+    #[serde(default)]
     pub warnings: Vec<String>,
 }
 

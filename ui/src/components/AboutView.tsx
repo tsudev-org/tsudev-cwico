@@ -8,7 +8,7 @@
  */
 
 import type { AboutInfo, Locale } from "../types";
-import { translator } from "../i18n";
+import { formatDate, translator } from "../i18n";
 import { Brand } from "./Brand";
 import { Button, Notice, Panel } from "./primitives";
 import { openBackupDir, openProductSite } from "../api";
@@ -25,12 +25,12 @@ export function AboutView({
 
   const rows: [string, string][] = [
     [t("about.engine"), `cwico-core ${info.appVersion}`],
-    ["Release", info.appRelease],
+    [t("about.release"), info.appRelease],
     [t("about.os"), info.platform.osDescription],
-    ["Architecture", info.platform.arch],
+    [t("about.arch"), info.platform.arch],
     [
       t("about.safetyDb"),
-      `v${info.safetyDbVersion} (${info.safetyDbUpdated}) - ${info.safetyRules} ${t(
+      `v${info.safetyDbVersion} (${formatDate(info.safetyDbUpdated)}) - ${info.safetyRules} ${t(
         "about.rules",
       )}`,
     ],

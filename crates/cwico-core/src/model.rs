@@ -264,7 +264,12 @@ pub struct SoftwareItem {
 
     /// Executables belonging to this item, matched against running processes
     /// before uninstalling.
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    ///
+    /// Always serialised, even when empty: the front end types this as a
+    /// required array and calls `.join` on it. Skipping it when empty blanked
+    /// the whole window on the first scan of a real machine (09/11/2026) -
+    /// the fixture data always had it filled, so nothing caught it earlier.
+    #[serde(default)]
     pub executables: Vec<String>,
 
     /// Base64 PNG of the item's icon, filled in lazily by the UI layer.
@@ -281,7 +286,9 @@ pub struct SoftwareItem {
 
     /// Free-form extras (`SystemComponent`, `WindowsInstaller`, task triggers…)
     /// kept for the details pane and the audit log.
-    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    ///
+    /// Always serialised, even when empty - see `executables`.
+    #[serde(default)]
     pub extra: BTreeMap<String, String>,
 }
 
