@@ -33,6 +33,19 @@ release-of-day counter:
   official mark. The standards gate now fails a build that is missing an
   icon or installer image, or whose `tauri.conf.json` points at one that does
   not exist.
+- Every record list - the scan results, the tweak catalogue, the items in the
+  removal plan - pages at 10 / 20 / 50 / 100 / 200 rows (default 10, picker
+  bottom-left, remembered per list). A real scan returns hundreds of items.
+- Search in the software list ignores Vietnamese diacritics: `dich vu` finds
+  `Dịch vụ`.
+
+### Changed
+
+- Colours come from the tsudev design tokens. Muted text was 3.6:1 on white,
+  below WCAG AA; interactive edges now use the 3:1 `border-control`; safety
+  badges and status colours use the status tokens. An automated WCAG 2.2 AA
+  check of the scan screen went from 783 contrast failures to 2 (light) and
+  951 to 0 (dark).
 
 ### Fixed
 
