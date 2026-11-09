@@ -23,3 +23,30 @@ jobs:
 
       - name: Đối chiếu với bộ quy ước trung tâm
         run: ./scripts/sync-standards.sh --check
+
+      # BRAND_ASSETS.md mục 12.2, bản cho desktop: thiếu icon hay ảnh bản cài thì chặn,
+      # và mọi đường dẫn ảnh trong tauri.conf.json phải trỏ tới tệp có thật.
+      - name: Kiểm tra tài sản nhận diện (desktop)
+        run: |
+          set -e
+          for f in assets/brand/tsudev-logo.png \
+                   app/src-tauri/icons/icon.ico app/src-tauri/icons/32x32.png \
+                   app/src-tauri/icons/128x128.png app/src-tauri/icons/128x128@2x.png \
+                   app/src-tauri/installer/nsis-header.bmp app/src-tauri/installer/nsis-sidebar.bmp \
+                   app/src-tauri/installer/wix-banner.bmp app/src-tauri/installer/wix-dialog.bmp \
+                   ui/public/brand/tsudev-logo.png; do
+            test -s "$f" || { echo "Thiếu tài sản bắt buộc: $f (BRAND_ASSETS.md mục 12)"; exit 1; }
+          done
+          python3 - <<'PY'
+          import json, pathlib, sys
+          base = pathlib.Path("app/src-tauri")
+          conf = json.loads((base / "tauri.conf.json").read_text())
+          win = conf["bundle"]["windows"]
+          paths = list(conf["bundle"]["icon"]) + [
+              win["nsis"][k] for k in ("installerIcon", "headerImage", "sidebarImage")
+          ] + [win["wix"][k] for k in ("bannerPath", "dialogImagePath")]
+          missing = [p for p in paths if not (base / p).is_file()]
+          if missing:
+              sys.exit(f"tauri.conf.json trỏ tới tệp không có: {missing}")
+          print(f"đủ {len(paths)} tệp tài sản trong tauri.conf.json")
+          PY

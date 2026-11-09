@@ -18,6 +18,7 @@
 
 # Binary assets - never touch these.
 *.png   binary
+*.bmp   binary
 *.ico   binary
 *.icns  binary
 *.jpg   binary
