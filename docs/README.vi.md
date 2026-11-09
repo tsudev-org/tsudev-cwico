@@ -1,17 +1,16 @@
 <div align="center">
 
 <a href="https://tsudev.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="../assets/brand/tsudev-wordmark-dark.png">
-    <img src="../assets/brand/tsudev-wordmark.png" alt="tsudev" width="320">
-  </picture>
+  <img src="../assets/brand/tsudev-logo.png" alt="tsudev" width="96">
 </a>
 
 <h1>cwico</h1>
 
 **Bộ công cụ rà quét và gỡ bỏ phần mềm Windows chuyên sâu**
 
-[![CI](https://github.com/tsudev-tsudev/tsudev-cwico/actions/workflows/ci.yml/badge.svg)](https://github.com/tsudev-tsudev/tsudev-cwico/actions/workflows/ci.yml)
+Một sản phẩm của [tsudev](https://tsudev.com).
+
+[![CI](https://github.com/tsudev-org/tsudev-cwico/actions/workflows/ci.yml/badge.svg)](https://github.com/tsudev-org/tsudev-cwico/actions/workflows/ci.yml)
 [![Giấy phép: MIT](https://img.shields.io/badge/gi%E1%BA%A5y%20ph%C3%A9p-MIT-2482bd)](../LICENSE)
 [![Rust](https://img.shields.io/badge/rust-1.82%2B-ef6d18)](https://www.rust-lang.org)
 [![Quy tắc an toàn](https://img.shields.io/badge/quy%20t%E1%BA%AFc%20an%20to%C3%A0n-58-2482bd)](../data/safety-db.json)
@@ -49,6 +48,18 @@ Quy trình gỡ bỏ gồm bốn bước cho mỗi mục:
    `DeprovisionPackageForAllUsersAsync` để nó không quay lại với tài khoản mới.
 4. **Xóa tận gốc** - thư mục và khóa Registry còn sót, mỗi đường dẫn đều phải
    qua bộ chặn an toàn trước.
+
+---
+
+## Hạng sản phẩm
+
+**Hạng C - ngoại tuyến** theo chuẩn tài khoản tsudev
+([`AUTH_AND_ACCOUNT.md`](../.standards/docs/AUTH_AND_ACCOUNT.md) mục 1). Mọi
+chức năng chạy không cần tài khoản, không cần máy chủ: không có màn hình đăng
+nhập, không chức năng nào bị khóa sau đăng nhập. Yêu cầu mạng duy nhất là kiểm
+tra bản cập nhật trên GitHub Releases lúc khởi động (xem
+[Cập nhật tự động](#cập-nhật-tự-động)) - không gửi dữ liệu nào về máy, và mất
+mạng thì phần mềm vẫn chạy bình thường.
 
 ---
 
@@ -180,7 +191,7 @@ và không gỡ được gì.
 ### Tự build
 
 ```bash
-git clone https://github.com/tsudev-tsudev/tsudev-cwico
+git clone https://github.com/tsudev-org/tsudev-cwico
 cd tsudev-cwico
 
 # Test bộ máy - chạy được trên mọi hệ điều hành

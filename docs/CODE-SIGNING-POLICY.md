@@ -28,7 +28,7 @@ have multi-factor authentication enabled.
 Only artefacts built by
 [`.github/workflows/release.yml`](../.github/workflows/release.yml) from a
 tagged commit on `main` in
-[tsudev-tsudev/tsudev-cwico](https://github.com/tsudev-tsudev/tsudev-cwico)
+[tsudev-org/tsudev-cwico](https://github.com/tsudev-org/tsudev-cwico)
 are signed. Nothing is built locally and uploaded, and no third-party binary
 is ever signed with this project's identity.
 
@@ -79,7 +79,7 @@ affairs that might change quietly:
 ### The one network request
 
 On startup the application fetches
-`https://github.com/tsudev-tsudev/tsudev-cwico/releases/latest/download/latest.json`
+`https://github.com/tsudev-org/tsudev-cwico/releases/latest/download/latest.json`
 to learn whether a newer release exists. This is a static file on GitHub's
 CDN. The request carries nothing about the user or their machine beyond what
 any HTTP request unavoidably reveals to the server serving it - GitHub's
@@ -96,6 +96,6 @@ where a change to any of them is treated as a security-relevant change.
 
 If you believe a binary signed with this project's identity is not what this
 repository built, please report it privately:
-[security advisory](https://github.com/tsudev-tsudev/tsudev-cwico/security/advisories/new)
+[security advisory](https://github.com/tsudev-org/tsudev-cwico/security/advisories/new)
 or security@tsudev.com. That is the highest-priority class of report this
 project accepts.

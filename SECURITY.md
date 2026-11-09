@@ -50,7 +50,7 @@ is worth being explicit about what we treat as a vulnerability:
 
 Please **do not open a public issue** for anything in the high-priority list.
 
-* GitHub: [private vulnerability reporting](https://github.com/tsudev-tsudev/tsudev-cwico/security/advisories/new)
+* GitHub: [private vulnerability reporting](https://github.com/tsudev-org/tsudev-cwico/security/advisories/new)
 * Email: security@tsudev.com
 
 Include the item's `id` and classification if the report involves a specific
@@ -87,7 +87,7 @@ a bug, not a trade-off:
 ## Verifying a release
 
 Release binaries are built by
-[GitHub Actions](https://github.com/tsudev-tsudev/tsudev-cwico/blob/main/.github/workflows/release.yml)
+[GitHub Actions](https://github.com/tsudev-org/tsudev-cwico/blob/main/.github/workflows/release.yml)
 from a tagged commit, and each release publishes `sha256sums.txt`.
 
 ```powershell
