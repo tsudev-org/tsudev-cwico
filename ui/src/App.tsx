@@ -93,6 +93,8 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
+    // The ecosystem tokens key off data-theme; the `dark` class stays for Tailwind.
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
     localStorage.setItem(THEME_KEY, dark ? "dark" : "light");
   }, [dark]);
 
@@ -398,9 +400,8 @@ export default function App() {
               style={
                 tab === id
                   ? {
-                      background:
-                        "color-mix(in srgb, var(--color-tsu-500) 14%, transparent)",
-                      color: "var(--color-tsu-600)",
+                      background: "color-mix(in srgb, var(--primary) 12%, var(--bg-surface))",
+                      color: "var(--text-link)",
                     }
                   : { color: "var(--text-secondary)" }
               }

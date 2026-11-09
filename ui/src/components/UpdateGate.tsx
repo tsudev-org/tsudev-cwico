@@ -123,7 +123,7 @@ export function UpdateGate({
             <dt style={{ color: "var(--text-muted)" }}>{t("update.new")}</dt>
             <dd
               className="selectable font-mono font-semibold"
-              style={{ color: "var(--color-dev-600)" }}
+              style={{ color: "var(--warning)" }}
             >
               {status.newRelease ?? status.newVersion}
             </dd>

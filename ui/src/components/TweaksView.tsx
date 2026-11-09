@@ -169,7 +169,7 @@ export function TweaksView({ tweaks, locale, busy, outcomes, onApply }: Props) {
                           <p
                             className="selectable mt-1 font-mono text-[11px]"
                             style={{
-                              color: outcome.ok ? "var(--color-tsu-500)" : "#b3261e",
+                              color: outcome.ok ? "var(--success)" : "var(--danger)",
                             }}
                           >
                             {outcome.detail}

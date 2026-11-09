@@ -67,15 +67,17 @@ export function Button({
       color: "#fff",
       borderColor: "var(--color-tsu-600)",
     },
+    // Token danger + on-status: the old brand orange gave white text 4.2:1.
     danger: {
-      background: "var(--color-dev-600)",
-      color: "#fff",
-      borderColor: "var(--color-dev-600)",
+      background: "var(--danger)",
+      color: "var(--on-status)",
+      borderColor: "var(--danger)",
     },
     outline: {
       background: "transparent",
       color: "var(--text-primary)",
-      borderColor: "var(--border-strong)",
+      // An interactive edge: border-control, not the decorative border-strong.
+      borderColor: "var(--border-control)",
     },
     ghost: {
       background: "transparent",
@@ -109,29 +111,31 @@ const SAFETY_STYLE: Record<
   SafetyClass,
   { glyph: string; fg: string; bg: string; border: string }
 > = {
+  // Status tokens, not the brand palette: they hold 4.5:1 in every theme
+  // (DESIGN_SYSTEM.md section 1). Colour never stands alone - glyph + label.
   safe: {
     glyph: "✓",
-    fg: "var(--color-tsu-700)",
-    bg: "color-mix(in srgb, var(--color-tsu-500) 12%, transparent)",
-    border: "color-mix(in srgb, var(--color-tsu-500) 35%, transparent)",
+    fg: "var(--success)",
+    bg: "var(--bg-surface)",
+    border: "color-mix(in srgb, var(--success) 45%, transparent)",
   },
   caution: {
     glyph: "!",
-    fg: "var(--color-dev-700)",
-    bg: "color-mix(in srgb, var(--color-dev-500) 14%, transparent)",
-    border: "color-mix(in srgb, var(--color-dev-500) 40%, transparent)",
+    fg: "var(--warning)",
+    bg: "var(--bg-surface)",
+    border: "color-mix(in srgb, var(--warning) 45%, transparent)",
   },
   unknown: {
     glyph: "?",
     fg: "var(--text-secondary)",
-    bg: "color-mix(in srgb, var(--text-secondary) 10%, transparent)",
+    bg: "var(--bg-subtle)",
     border: "var(--border-strong)",
   },
   critical: {
     glyph: "⛊",
-    fg: "#b3261e",
-    bg: "color-mix(in srgb, #b3261e 12%, transparent)",
-    border: "color-mix(in srgb, #b3261e 38%, transparent)",
+    fg: "var(--danger)",
+    bg: "var(--bg-surface)",
+    border: "color-mix(in srgb, var(--danger) 45%, transparent)",
   },
 };
 
@@ -258,10 +262,10 @@ export function Notice({
   action?: ReactNode;
 }) {
   const tones = {
-    info: { accent: "var(--color-tsu-500)", glyph: "i" },
-    success: { accent: "var(--color-tsu-500)", glyph: "✓" },
-    warning: { accent: "var(--color-dev-500)", glyph: "!" },
-    danger: { accent: "#b3261e", glyph: "⛊" },
+    info: { accent: "var(--info)", glyph: "i" },
+    success: { accent: "var(--success)", glyph: "✓" },
+    warning: { accent: "var(--warning)", glyph: "!" },
+    danger: { accent: "var(--danger)", glyph: "⛊" },
   } as const;
   const { accent, glyph } = tones[tone];
 

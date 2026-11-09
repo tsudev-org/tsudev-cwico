@@ -128,11 +128,12 @@ export function SoftwareTable({
           className="selectable min-w-[220px] flex-1 rounded-lg border px-3 py-2 text-sm"
           style={{
             background: "var(--surface-sunken)",
-            borderColor: "var(--border-subtle)",
+            borderColor: "var(--border-control)",
             color: "var(--text-primary)",
           }}
         />
         <Select
+          label={t("filter.kindLabel")}
           value={kind}
           onChange={(value) => setKind(value as SourceKind | "")}
           options={[
@@ -141,6 +142,7 @@ export function SoftwareTable({
           ]}
         />
         <Select
+          label={t("filter.safetyLabel")}
           value={safety}
           onChange={(value) => setSafety(value as SafetyClass | "")}
           options={[
@@ -149,6 +151,7 @@ export function SoftwareTable({
           ]}
         />
         <Select
+          label={t("filter.sortLabel")}
           value={sortBy}
           onChange={(value) => setSortBy(value as SortBy)}
           options={[
@@ -265,7 +268,7 @@ export function SoftwareTable({
                       type="button"
                       onClick={() => setDetail(item)}
                       className="rounded px-2 py-1 text-[12px]"
-                      style={{ color: "var(--color-tsu-500)" }}
+                      style={{ color: "var(--text-link)" }}
                     >
                       {t("action.details")}
                     </button>
@@ -297,19 +300,22 @@ function Select({
   value,
   onChange,
   options,
+  label,
 }: {
   value: string;
   onChange: (value: string) => void;
   options: { value: string; label: string }[];
+  label: string;
 }) {
   return (
     <select
+      aria-label={label}
       value={value}
       onChange={(event) => onChange(event.target.value)}
       className="rounded-lg border px-2.5 py-2 text-sm"
       style={{
         background: "var(--surface-sunken)",
-        borderColor: "var(--border-subtle)",
+        borderColor: "var(--border-control)",
         color: "var(--text-primary)",
       }}
     >

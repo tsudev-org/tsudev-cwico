@@ -50,7 +50,7 @@ export function Pager<T>({
 
   const cell =
     "inline-flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-[13px] tabular-nums disabled:cursor-not-allowed disabled:opacity-40";
-  const cellStyle = { borderColor: "var(--border-subtle)", background: "var(--surface-panel)", color: "var(--text-primary)" };
+  const cellStyle = { borderColor: "var(--border-control)", background: "var(--surface-panel)", color: "var(--text-primary)" };
 
   return (
     <div
@@ -117,7 +117,7 @@ export function Pager<T>({
                   aria-current={n === page ? "page" : undefined}
                   style={
                     n === page
-                      ? { ...cellStyle, background: "var(--color-tsu-600)", borderColor: "var(--color-tsu-600)", color: "#fff" }
+                      ? { ...cellStyle, background: "var(--primary)", borderColor: "var(--primary)", color: "var(--on-primary)" }
                       : cellStyle
                   }
                   onClick={() => paged.setPage(n)}

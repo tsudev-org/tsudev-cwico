@@ -1,4 +1,8 @@
 @import "tailwindcss";
+/* The ecosystem's colour tokens - the single source of truth, copied read-only
+   into .standards/ by the standards sync. Never redefine their values here;
+   alias them below. Theme is chosen by <html data-theme="light|dark">. */
+@import "../../.standards/tokens/tokens.css";
 
 /* ---------------------------------------------------------------------------
    Brand tokens.
@@ -39,46 +43,34 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Semantic surface tokens, defined light-first and swapped under
-   `.dark`. Every colour has a definition on `:root`, so nothing renders
-   transparent if a theme class is missing.
+   Semantic surface names used across the components, now ALIASES of the
+   ecosystem tokens (QU-STD-1). Text and border colours come straight from the
+   tokens; only the names this codebase already used are mapped. The previous
+   local palette had text-muted at #778999 - about 3.6:1 on white, below the
+   4.5:1 WCAG AA floor the design system requires.
+
+   `border-subtle` is the decorative divider (token `border`). Interactive
+   edges - inputs, selects, secondary buttons - use `border-control` (3:1,
+   DESIGN_SYSTEM.md section 1), never `border-subtle` or `border-strong`.
 --------------------------------------------------------------------------- */
 :root {
-  --surface-app: #f4f7fa;
-  --surface-panel: #ffffff;
-  --surface-raised: #ffffff;
-  --surface-sunken: #eef2f7;
-  --surface-hover: #e8eff7;
-  --border-subtle: #dbe3ec;
-  --border-strong: #c3d0de;
-  --text-primary: #10202f;
-  --text-secondary: #4a5b6d;
-  --text-muted: #778999;
+  --surface-app: var(--bg-base);
+  --surface-panel: var(--bg-surface);
+  --surface-raised: var(--bg-surface);
+  --surface-sunken: var(--bg-subtle);
+  --surface-hover: var(--bg-hover);
+  --border-subtle: var(--border);
   --shadow-panel: 0 1px 2px rgb(16 32 47 / 0.06), 0 8px 24px rgb(16 32 47 / 0.06);
 
   --tsu-word: var(--color-tsu-600);
   --dev-word: var(--color-dev-600);
-
-  color-scheme: light;
 }
 
 .dark {
-  --surface-app: #0a141f;
-  --surface-panel: #101d2b;
-  --surface-raised: #16283a;
-  --surface-sunken: #0d1927;
-  --surface-hover: #1b3145;
-  --border-subtle: #1e3549;
-  --border-strong: #2b4a64;
-  --text-primary: #e6eef6;
-  --text-secondary: #a6bacd;
-  --text-muted: #6c8299;
   --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.32);
 
   --tsu-word: var(--color-tsu-300);
   --dev-word: var(--color-dev-300);
-
-  color-scheme: dark;
 }
 
 html,
@@ -123,9 +115,9 @@ body {
   background: var(--color-tsu-400);
 }
 
-/* Focus rings must survive both themes; the brand blue reads on either. */
+/* Focus ring from the tokens: 3:1 on every background, in every theme. */
 :focus-visible {
-  outline: 2px solid var(--color-tsu-400);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: 4px;
 }

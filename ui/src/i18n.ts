@@ -33,6 +33,9 @@ const vi = {
   "scan.lastScan": "Lần quét gần nhất",
 
   "filter.search": "Tìm theo tên, nhà phát hành, mã gói…",
+  "filter.kindLabel": "Lọc theo loại",
+  "filter.safetyLabel": "Lọc theo mức an toàn",
+  "filter.sortLabel": "Sắp xếp theo",
   "filter.allKinds": "Tất cả loại",
   "filter.allSafety": "Tất cả mức an toàn",
   "filter.sort": "Sắp xếp",
@@ -214,6 +217,9 @@ const en: Record<TranslationKey, string> = {
   "scan.lastScan": "Last scan",
 
   "filter.search": "Search by name, publisher, package id…",
+  "filter.kindLabel": "Filter by kind",
+  "filter.safetyLabel": "Filter by safety class",
+  "filter.sortLabel": "Sort by",
   "filter.allKinds": "All kinds",
   "filter.allSafety": "All safety classes",
   "filter.sort": "Sort",
