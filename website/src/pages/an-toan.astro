@@ -1,0 +1,14 @@
+---
+import Trang from '../layouts/Trang.astro';
+import TaiLieu from '../components/TaiLieu.astro';
+import { mucMd, renderMd, REPO_URL } from '../lib/noi-dung';
+
+// Nguồn: mục "Cơ chế an toàn" của docs/README.vi.md - sửa nội dung ở đó, không sửa ở đây.
+const html = renderMd(mucMd('docs/README.vi.md', 'Cơ chế an toàn'), 'docs/README.vi.md');
+---
+<Trang tieuDe="Cơ chế an toàn" moTa="Ba lớp bảo vệ của cwico: phân loại theo cơ sở dữ liệu an toàn, cổng lập kế hoạch chặn cứng mục Trọng yếu, bộ chặn xóa và cơ chế khôi phục." duongDan="/an-toan/">
+  <TaiLieu tieuDe="Cơ chế an toàn" html={html} ghiChu="Cơ sở thiết kế đầy đủ, kèm lý do của từng quyết định, có trong tài liệu kỹ thuật (tiếng Anh)." nguon={{ ten: 'docs/SAFETY.md', url: `${REPO_URL}/blob/main/docs/SAFETY.md` }}>
+    <h2 id="tra-cuu">Tra cứu</h2>
+    <p>Xem từng quy tắc phân loại, kèm lý do và những gì được dọn, ở trang <a href="/co-so-du-lieu/">Quy tắc</a>. Danh mục tinh chỉnh hệ thống và cách hoàn tác ở trang <a href="/tinh-chinh/">Tinh chỉnh</a>.</p>
+  </TaiLieu>
+</Trang>

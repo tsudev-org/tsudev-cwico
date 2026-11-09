@@ -1,0 +1,71 @@
+---
+import Trang from '../layouts/Trang.astro';
+import { banMoiNhat, mb, REPO_URL } from '../lib/noi-dung';
+
+const ban = await banMoiNhat();
+const TEN_LOAI = {
+  exe: { t: 'Bộ cài NSIS (.exe)', d: 'Khuyên dùng. Hỗ trợ tự cập nhật trong ứng dụng.' },
+  msi: { t: 'Gói Windows Installer (.msi)', d: 'Cho triển khai hàng loạt qua Group Policy, Intune hoặc SCCM.' },
+} as const;
+const exe = ban.goi.find((g) => g.loai === 'exe');
+const tenExe = exe?.ten ?? `tsudev-cwico_${ban.phienBan}_x64-setup.exe`;
+---
+<Trang tieuDe="Tải về" moTa="Tải cwico cho Windows 10 và 11: bộ cài .exe, gói .msi hoặc winget; kèm mã SHA-256 để kiểm tra tệp và hướng dẫn chạy lần đầu an toàn." duongDan="/tai-ve/">
+  <div class="khung tai-lieu">
+    <nav class="tai-lieu__menu" aria-label="Tải về">
+      <p>Tải về</p>
+      <ul>
+        <li><a href="#winget">winget</a></li>
+        <li><a href="#chon-goi">Bộ cài</a></li>
+        <li><a href="#kiem-tra">Kiểm tra tệp</a></li>
+        <li><a href="#lan-dau">Chạy lần đầu</a></li>
+        <li><a href="#cap-nhat">Cập nhật</a></li>
+      </ul>
+    </nav>
+    <article class="van-ban">
+      <h1>Tải cwico {ban.phienBan}</h1>
+      <p>Phát hành ngày {ban.ngay}. Mọi gói được build tự động trên GitHub Actions từ mã nguồn công khai; trang này chỉ dẫn tới <a href={ban.url} target="_blank" rel="noopener noreferrer">trang phát hành trên GitHub</a>, không lưu bản sao.</p>
+
+      <h2 id="winget">Cài bằng winget</h2>
+      <p>Cách nhanh nhất trên Windows 10 (1809 trở lên) và Windows 11. Mở Terminal hoặc PowerShell:</p>
+      <pre tabindex="0"><code>winget install tsudev.cwico</code></pre>
+      <p>Gói đã có trong kho chính thức <a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/t/tsudev/cwico" target="_blank" rel="noopener noreferrer">microsoft/winget-pkgs</a>; winget tự kiểm tra mã SHA-256 trước khi cài.</p>
+
+      <h2 id="chon-goi">Tải bộ cài</h2>
+      <div class="goi">
+        {ban.goi.map((g) => (
+          <div class="goi__muc">
+            <div>
+              <h3>{TEN_LOAI[g.loai].t}</h3>
+              <p class="goi__ten">{g.ten} · {mb(g.kichThuoc)} · {TEN_LOAI[g.loai].d}</p>
+            </div>
+            <a class={`nut ${g.loai === 'exe' ? 'nut--chinh' : 'nut--phu'}`} href={g.url}>Tải về</a>
+            {g.sha256 && <p class="goi__bam">SHA-256: {g.sha256}</p>}
+          </div>
+        ))}
+      </div>
+      <p>Chỉ có bản 64-bit (x64). Windows 32-bit và Windows trên ARM chưa được hỗ trợ.</p>
+
+      <h2 id="kiem-tra">Kiểm tra tệp trước khi chạy</h2>
+      <p>So mã SHA-256 của tệp tải về với mã ở trên. Trong PowerShell:</p>
+      <pre tabindex="0"><code>Get-FileHash .\{tenExe} -Algorithm SHA256</code></pre>
+      <div class="chu-y">
+        <p><strong>Bộ cài chưa có chữ ký Authenticode.</strong> Windows SmartScreen sẽ cảnh báo ở lần chạy đầu ("Windows protected your PC"). Hãy kiểm tra mã SHA-256 như trên trước, rồi mới chọn <em>More info → Run anyway</em>. Đăng ký chứng chỉ ký mã miễn phí cho dự án mã nguồn mở đang được chuẩn bị.</p>
+        <p><strong>Chỉ tải từ trang này, winget, hoặc <a href={`${REPO_URL}/releases`} target="_blank" rel="noopener noreferrer">GitHub của dự án</a>.</strong> Mọi trang khác tự xưng là "bản chính thức" đều không liên quan.</p>
+      </div>
+
+      <h2 id="lan-dau">Chạy lần đầu</h2>
+      <ol>
+        <li>Chạy cwico với quyền <strong>Administrator</strong>. Không có quyền quản trị thì kết quả quét thiếu và không gỡ được gì.</li>
+        <li>Nhấn <strong>Quét</strong>. Việc quét chỉ đọc, không thay đổi gì trên máy.</li>
+        <li>Chọn các mục muốn gỡ, mở <strong>Kế hoạch</strong> để xem chính xác từng bước sẽ chạy. Mục Trọng yếu không chọn được; mục Cẩn trọng cần xác nhận riêng.</li>
+        <li>Khi chạy, cwico tạo điểm khôi phục hệ thống và tệp <code>.reg</code> trước. Nếu không tạo được điểm khôi phục, lượt chạy dừng lại trước khi đụng vào bất cứ thứ gì.</li>
+      </ol>
+      <p>Muốn xem trước mà chắc chắn không thay đổi gì: dùng <a href="/dong-lenh/">dòng lệnh</a> <code>cwico plan</code> - mọi lệnh chỉ chạy thử cho tới khi có <code>--apply</code>.</p>
+
+      <h2 id="cap-nhat">Cập nhật</h2>
+      <p>Mỗi lần khởi động, cwico kiểm tra bản mới trên GitHub Releases. Nếu <strong>xác nhận</strong> có bản mới, ứng dụng yêu cầu cập nhật trước khi dùng tiếp - vì cơ sở dữ liệu an toàn quyết định thứ gì được phép gỡ, và một bản cũ đang dùng đánh giá an toàn đã lỗi thời. Gói cập nhật được ký; bản đã cài chỉ chấp nhận gói ký bằng đúng khóa của dự án.</p>
+      <p>Mất mạng hay GitHub gặp sự cố thì ứng dụng vẫn chạy bình thường: sự cố máy chủ không được khóa mọi người dùng cùng lúc. Lịch sử thay đổi ở trang <a href="/nhat-ky/">Nhật ký</a>.</p>
+    </article>
+  </div>
+</Trang>

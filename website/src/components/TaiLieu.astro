@@ -1,0 +1,21 @@
+---
+// Trang tài liệu: mục lục bên trái (tự sinh từ các tiêu đề h2), nội dung HTML đã render bên phải.
+interface Props { tieuDe: string; html: string; ghiChu?: string; nguon?: { ten: string; url: string } }
+const { tieuDe, html, ghiChu, nguon } = Astro.props;
+const muc = [...html.matchAll(/<h2 id="([^"]+)">(.*?)<\/h2>/g)].map((m) => ({ id: m[1], ten: m[2].replace(/<[^>]+>/g, '') }));
+---
+<div class="khung tai-lieu">
+  {muc.length > 1 && (
+    <nav class="tai-lieu__menu" aria-label={`Mục lục: ${tieuDe}`}>
+      <p>Mục lục</p>
+      <ul>{muc.map((m) => <li><a href={`#${m.id}`} set:html={m.ten} /></li>)}</ul>
+    </nav>
+  )}
+  <article class="van-ban">
+    <h1>{tieuDe}</h1>
+    {ghiChu && <p class="ghi-chu-nguon">{ghiChu}{nguon && <> Bản gốc: <a href={nguon.url} target="_blank" rel="noopener noreferrer">{nguon.ten}</a>.</>}</p>}
+    <slot name="dau" />
+    <Fragment set:html={html} />
+    <slot />
+  </article>
+</div>

@@ -1,0 +1,41 @@
+# Build website (cwico.tsudev.com) và kiểm tra nhận diện/CSP/liên kết/khả năng truy cập cho mỗi thay đổi liên quan.
+# Deploy lên Cloudflare Pages do chủ repo chạy: cd website && npm ci && npm run deploy (xem website/README.md).
+name: Website
+
+on:
+  push:
+    branches: [main]
+    paths: ["website/**", "data/**", "docs/README.vi.md", "docs/screenshots/**", "CHANGELOG.md", "SECURITY.md", ".github/workflows/website.yml"]
+  pull_request:
+    branches: [main]
+    paths: ["website/**", "data/**", "docs/README.vi.md", "docs/screenshots/**", "CHANGELOG.md", "SECURITY.md", ".github/workflows/website.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build website
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+        env:
+          # Đọc bản phát hành mới nhất qua API GitHub; token chỉ để tránh giới hạn lượt gọi ẩn danh.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Cài Chromium cho kiểm tra khả năng truy cập
+        run: npx playwright install --with-deps chromium
+      - name: Kiểm tra khả năng truy cập (axe-core, WCAG 2.2 AA, sáng + tối)
+        run: npm run check:a11y

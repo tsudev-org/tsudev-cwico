@@ -1,0 +1,143 @@
+---
+import Trang from '../layouts/Trang.astro';
+import { banMoiNhat, CSDL, demLop, REPO_URL, TINH_CHINH, TEN_LOP } from '../lib/noi-dung';
+
+const ban = await banMoiNhat();
+const exe = ban.goi.find((g) => g.loai === 'exe');
+const dem = demLop();
+const tongQuyTac = CSDL.rules.length;
+
+const sauNoi = [
+  { t: 'Chương trình đã cài', d: 'Khóa Uninstall ở HKLM và HKCU, đọc cả hai chế độ xem 64-bit và WOW6432Node - không sót phần mềm 32-bit.' },
+  { t: 'Ứng dụng UWP / AppX', d: 'Tên gói, nhà phát hành, kiến trúc, đường dẫn cài; phân biệt gói khung và gói hệ thống qua PackageManager.' },
+  { t: 'Gói nạp sẵn (provisioned)', d: 'Gói đã nạp vào ảnh Windows, tự cài lại cho mọi tài khoản mới - gỡ thường không hết, cwico gỡ tận gốc.' },
+  { t: 'Dịch vụ Windows', d: 'Tên hiển thị, trạng thái, kiểu khởi động và ImagePath, đọc trực tiếp từ Service Control Manager.' },
+  { t: 'Tác vụ lập lịch', d: 'Đường dẫn đầy đủ, trạng thái bật và đang chạy của từng tác vụ qua COM của Task Scheduler.' },
+  { t: 'Khởi động cùng máy', d: 'Run, RunOnce ở cả hai hive, cả hai chế độ xem, cùng thư mục Startup của người dùng và của máy.' },
+];
+const buocGo = [
+  { t: 'Dừng tiến trình', d: 'Tắt tiến trình của phần mềm. Tiến trình dùng chung như svchost.exe và tiến trình trọng yếu khi khởi động không bao giờ bị đụng.' },
+  { t: 'Chạy trình gỡ của hãng', d: 'Ưu tiên QuietUninstallString; nếu không có, chỉ tự suy công tắc im lặng cho MSI, Inno Setup và NSIS.' },
+  { t: 'Gỡ gói cho mọi người dùng', d: 'Gỡ gói AppX cho tất cả tài khoản, rồi bỏ nạp sẵn để phần mềm không quay lại ở tài khoản mới.' },
+  { t: 'Dọn tận gốc', d: 'Thư mục và khóa Registry còn sót - mỗi đường dẫn đều qua bộ chặn xóa ngay trước khi xóa.' },
+];
+const lop = [
+  { k: 'safe', so: dem.safe },
+  { k: 'caution', so: dem.caution },
+  { k: 'critical', so: dem.critical },
+] as const;
+---
+<Trang moTa="cwico: rà quét sâu và gỡ phần mềm thừa trên Windows - chặn cứng thành phần hệ thống, tạo điểm khôi phục và sao lưu Registry trước mỗi lần chạy." duongDan="/">
+  <section class="mo-dau">
+    <div class="khung mo-dau__luoi">
+      <div>
+        <span class="nhan">Phiên bản {ban.phienBan} · {ban.ngay}</span>
+        <h1>Gỡ phần mềm thừa trên Windows mà không làm hỏng máy</h1>
+        <p class="mo-dau__phu">cwico đọc cả sáu nơi Windows giấu phần mềm đã cài, phân loại từng mục kèm lý do, rồi chỉ gỡ những gì bạn đã xem và đồng ý - sau khi đã tạo điểm khôi phục.</p>
+        <div class="mo-dau__nut">
+          {exe && <a class="nut nut--chinh" href={exe.url}>Tải bộ cài cho Windows (x64)</a>}
+          <a class="nut nut--phu" href="/tai-ve/">winget, MSI và kiểm tra tệp</a>
+        </div>
+        <p class="mo-dau__ghi-chu">Windows 10 và 11 · miễn phí, mã nguồn mở MIT · không tài khoản, không thu thập dữ liệu</p>
+      </div>
+      <figure class="khung-anh">
+        <img src="/anh/scan-light-vi.png" alt="Danh sách phần mềm cwico tìm thấy, mỗi dòng ghi mức an toàn và lý do" width="1280" height="860">
+        <figcaption>Mỗi dòng có mức an toàn và <strong>lý do</strong> - không phải rê chuột mới biết.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="muc muc--nen" aria-labelledby="so-lieu">
+    <div class="khung">
+      <h2 id="so-lieu">Ba lớp bảo vệ giữa bạn và một chiếc máy không khởi động được</h2>
+      <p class="muc__dan">Lỗi tệ nhất của một công cụ dọn Windows là máy không lên. cwico đặt ba lớp độc lập trước kết cục đó; mỗi lớp đều có kiểm thử tự động chạy trên mọi lần thay đổi mã.</p>
+      <ul class="so-lieu">
+        <li><strong>{tongQuyTac}</strong><span>quy tắc phân loại</span></li>
+        <li><strong>{dem.critical}</strong><span>thành phần bị chặn cứng</span></li>
+        <li><strong>{TINH_CHINH.tweaks.length}</strong><span>tinh chỉnh có hoàn tác</span></li>
+        <li><strong>0</strong><span>dữ liệu gửi đi</span></li>
+      </ul>
+      <ol class="lop-bao-ve">
+        <li class="the">
+          <h3>1. Phân loại</h3>
+          <p>Mọi mục được đối chiếu với cơ sở dữ liệu an toàn. Mục không khớp quy tắc nào là <strong>Chưa rõ</strong>, không bao giờ là An toàn; khớp cả An toàn lẫn Trọng yếu thì Trọng yếu thắng.</p>
+          <a href="/co-so-du-lieu/">Tra cứu {tongQuyTac} quy tắc</a>
+        </li>
+        <li class="the">
+          <h3>2. Cổng lập kế hoạch</h3>
+          <p>Mục Trọng yếu <strong>không thể</strong> đưa vào kế hoạch - không bằng cờ, không bằng xác nhận, không từ dòng lệnh. Mục Cẩn trọng phải xác nhận riêng từng mục.</p>
+          <a href="/an-toan/#2-cổng-lập-kế-hoạch---removalplanbuild">Cách cổng hoạt động</a>
+        </li>
+        <li class="the">
+          <h3>3. Bộ chặn xóa</h3>
+          <p>Mọi đường dẫn và khóa Registry được kiểm ngay trước khi xóa: gốc ổ đĩa, System32, hồ sơ người dùng, Documents, OneDrive, gốc hive đều bị từ chối thẳng.</p>
+          <a href="/an-toan/#3-bộ-chặn-xóa---cwico_coreguard">Danh sách bị chặn</a>
+        </li>
+      </ol>
+      <ul class="lop-an-toan" aria-label="Phân bố quy tắc theo mức">
+        {lop.map((l) => (
+          <li class={`lop-an-toan__muc lop--${l.k}`}>
+            <span class="huy-hieu" data-lop={l.k}>{TEN_LOP[l.k].ten}</span>
+            <span><strong>{l.so}</strong> quy tắc - {TEN_LOP[l.k].y}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="muc" aria-labelledby="sau-noi">
+    <div class="khung">
+      <h2 id="sau-noi">Sáu nơi Windows giấu phần mềm</h2>
+      <p class="muc__dan">Trình "Ứng dụng đã cài" của Windows chỉ cho bạn thấy một phần. cwico đọc trực tiếp bằng API Win32 và WinRT, không qua PowerShell.</p>
+      <ul class="the-luoi">
+        {sauNoi.map((x) => <li class="the"><h3>{x.t}</h3><p>{x.d}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="muc muc--nen" aria-labelledby="bon-buoc">
+    <div class="khung">
+      <h2 id="bon-buoc">Bốn bước gỡ, sau khi đã có đường lui</h2>
+      <p class="muc__dan">Trước bước gây thay đổi đầu tiên: tạo <strong>điểm khôi phục hệ thống</strong> (không tạo được thì hủy cả lượt chạy), xuất <strong>.reg</strong> mọi khóa sẽ đụng kèm tệp <code>restore-registry.cmd</code>, và ghi <strong>nhật ký giao dịch</strong> từng bước.</p>
+      <ol class="buoc">
+        {buocGo.map((x) => <li class="the"><h3>{x.t}</h3><p>{x.d}</p></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="muc" aria-labelledby="anh-chup">
+    <div class="khung">
+      <h2 id="anh-chup">Không có gì xảy ra trước khi bạn xem kế hoạch</h2>
+      <p class="muc__dan">Ứng dụng song ngữ Việt - Anh, ba chế độ nền theo hệ điều hành.</p>
+      <div class="anh-luoi">
+        <figure>
+          <img src="/anh/plan-light-en.png" alt="Kế hoạch gỡ: các bước sao lưu chạy trước, các bước cụ thể cho từng mục, và những mục bị từ chối kèm lý do" width="1280" height="940" loading="lazy">
+          <figcaption>Kế hoạch gỡ: sao lưu trước, từng bước cụ thể, mục bị từ chối có lý do</figcaption>
+        </figure>
+        <figure>
+          <img src="/anh/caution-dark-vi.png" alt="Hộp thoại xác nhận riêng cho một mục Cẩn trọng" width="1280" height="860" loading="lazy">
+          <figcaption>Mục Cẩn trọng phải xác nhận riêng - đánh dấu ô chọn chưa đủ</figcaption>
+        </figure>
+        <figure>
+          <img src="/anh/tweaks-dark-vi.png" alt="Danh mục tinh chỉnh hệ thống, mỗi mục có mức an toàn và đường hoàn tác" width="1280" height="860" loading="lazy">
+          <figcaption>{TINH_CHINH.tweaks.length} tinh chỉnh chọn riêng từng mục, mục nào cũng hoàn tác được</figcaption>
+        </figure>
+        <figure>
+          <img src="/anh/about-light-en.png" alt="Bảng Giới thiệu: số quy tắc an toàn đang nạp và nơi lưu tệp hoàn tác" width="1280" height="860" loading="lazy">
+          <figcaption>Biết chính xác bao nhiêu lớp bảo vệ đang nạp, tệp hoàn tác nằm ở đâu</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="muc muc--nen" aria-labelledby="nguon-goc">
+    <div class="khung">
+      <h2 id="nguon-goc">Mã nguồn mở, chạy ngoại tuyến</h2>
+      <p class="muc__dan">Mã nguồn công khai trên <a href={REPO_URL} target="_blank" rel="noopener noreferrer">GitHub</a>, giấy phép MIT, viết bằng Rust. Hạng sản phẩm C theo quy ước tsudev: không tài khoản, không đăng nhập; yêu cầu mạng duy nhất là kiểm tra bản cập nhật có chữ ký, mất mạng vẫn chạy bình thường.</p>
+      <div class="mo-dau__nut">
+        <a class="nut nut--phu" href="/an-toan/">Đọc cơ chế an toàn</a>
+        <a class="nut nut--phu" href="/dong-lenh/">Dùng từ dòng lệnh</a>
+      </div>
+    </div>
+  </section>
+</Trang>
