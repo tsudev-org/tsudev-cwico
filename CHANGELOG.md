@@ -37,6 +37,9 @@ release-of-day counter:
   Windows 11 Pro 25H2 - the first live run of this tool.
 - A render error now shows a bilingual error screen with the details and a
   Reload button instead of an empty window.
+- Dates read `HH:mm DD/MM/YYYY` / `DD/MM/YYYY` in both languages, as the
+  tsudev design system requires, instead of `9 thg 11, 2026` and ISO dates;
+  the About panel's Release and Architecture labels are translated.
 - Window title, installer copyright and long description no longer contain
   escaped em-dashes; copyright reads `Copyright (c) 2026 tsudev`.
 
