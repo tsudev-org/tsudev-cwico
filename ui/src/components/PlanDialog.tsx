@@ -11,6 +11,8 @@
 import type { Locale, RemovalPlan } from "../types";
 import { kindLabel, translator } from "../i18n";
 import { Button, Modal, Notice, SafetyBadge } from "./primitives";
+import { Pager } from "./Pager";
+import { usePaged } from "../pagination";
 
 interface Props {
   open: boolean;
@@ -90,40 +92,7 @@ export function PlanDialog({
             {plan.items.length} × {t("scan.itemsFound")} · {totalSteps} {t("plan.steps")}
           </p>
 
-          <ul
-            className="divide-y rounded-lg border"
-            style={{ borderColor: "var(--border-subtle)" }}
-          >
-            {plan.items.map((item) => (
-              <li
-                key={item.itemId}
-                className="px-3.5 py-2.5"
-                style={{ borderColor: "var(--border-subtle)" }}
-              >
-                <div className="flex flex-wrap items-center gap-2">
-                  <SafetyBadge safety={item.safety} locale={locale} compact />
-                  <span className="text-sm font-medium">{item.name}</span>
-                  <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
-                    {kindLabel(locale, item.source)}
-                  </span>
-                </div>
-                <ol
-                  className="mt-1.5 flex flex-wrap gap-1.5 text-[11px]"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  {item.steps.map((step, index) => (
-                    <li
-                      key={`${item.itemId}-${step.kind}-${index}`}
-                      className="rounded px-1.5 py-0.5 font-mono"
-                      style={{ background: "var(--surface-sunken)" }}
-                    >
-                      {index + 1}. {step.kind}
-                    </li>
-                  ))}
-                </ol>
-              </li>
-            ))}
-          </ul>
+          <PlanItems items={plan.items} locale={locale} />
         </>
       )}
 
@@ -167,5 +136,50 @@ export function PlanDialog({
         </>
       )}
     </Modal>
+  );
+}
+
+/** The plan's items, paged inside their own frame (DATA_TABLE: modals too). */
+function PlanItems({ items, locale }: { items: RemovalPlan["items"]; locale: Locale }) {
+  const t = translator(locale);
+  const paged = usePaged("plan", items, String(items.length));
+  return (
+    <div className="overflow-hidden rounded-lg border" style={{ borderColor: "var(--border-subtle)" }}>
+    <ul
+      className="divide-y"
+      style={{ borderColor: "var(--border-subtle)" }}
+    >
+      {paged.pageItems.map((item) => (
+        <li
+          key={item.itemId}
+          className="px-3.5 py-2.5"
+          style={{ borderColor: "var(--border-subtle)" }}
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            <SafetyBadge safety={item.safety} locale={locale} compact />
+            <span className="text-sm font-medium">{item.name}</span>
+            <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+              {kindLabel(locale, item.source)}
+            </span>
+          </div>
+          <ol
+            className="mt-1.5 flex flex-wrap gap-1.5 text-[11px]"
+            style={{ color: "var(--text-muted)" }}
+          >
+            {item.steps.map((step, index) => (
+              <li
+                key={`${item.itemId}-${step.kind}-${index}`}
+                className="rounded px-1.5 py-0.5 font-mono"
+                style={{ background: "var(--surface-sunken)" }}
+              >
+                {index + 1}. {step.kind}
+              </li>
+            ))}
+          </ol>
+        </li>
+      ))}
+    </ul>
+      <Pager paged={paged} locale={locale} label={t("pager.plan")} />
+    </div>
   );
 }

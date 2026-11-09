@@ -12,6 +12,8 @@ import { useMemo, useState } from "react";
 import type { Locale, Tweak, TweakCategory, TweakOutcome } from "../types";
 import { translator } from "../i18n";
 import { Button, Notice, Panel, SafetyBadge, Tag } from "./primitives";
+import { Pager } from "./Pager";
+import { usePaged } from "../pagination";
 
 const CATEGORY_LABEL: Record<TweakCategory, { vi: string; en: string }> = {
   privacy: { vi: "Quyền riêng tư", en: "Privacy" },
@@ -55,6 +57,20 @@ export function TweaksView({ tweaks, locale, busy, outcomes, onApply }: Props) {
     }
     return [...map.entries()].filter(([, list]) => list.length > 0);
   }, [tweaks]);
+
+  // Page the catalogue in its display order, then regroup the visible page so
+  // each category heading still sits above its own rows.
+  const ordered = useMemo(() => grouped.flatMap(([, list]) => list), [grouped]);
+  const paged = usePaged("tweaks", ordered, String(tweaks.length));
+  const pageGroups = useMemo(() => {
+    const groups: [TweakCategory, Tweak[]][] = [];
+    for (const tweak of paged.pageItems) {
+      const lastGroup = groups[groups.length - 1];
+      if (lastGroup && lastGroup[0] === tweak.category) lastGroup[1].push(tweak);
+      else groups.push([tweak.category, [tweak]]);
+    }
+    return groups;
+  }, [paged.pageItems]);
 
   const toggle = (id: string) => {
     setSelected((previous) => {
@@ -102,7 +118,7 @@ export function TweaksView({ tweaks, locale, busy, outcomes, onApply }: Props) {
       </p>
 
       <div className="min-h-0 flex-1 space-y-5 overflow-y-auto pr-1">
-        {grouped.map(([category, list]) => (
+        {pageGroups.map(([category, list]) => (
           <section key={category}>
             <h3
               className="mb-2 text-[11px] font-semibold uppercase tracking-wide"
@@ -178,6 +194,17 @@ export function TweaksView({ tweaks, locale, busy, outcomes, onApply }: Props) {
           <Notice tone="info" title={t("activity.empty")} />
         )}
       </div>
+      {ordered.length > 0 && (
+        <Panel padded={false} className="overflow-hidden">
+          <Pager
+            paged={paged}
+            locale={locale}
+            label={t("pager.tweaks")}
+            selectedCount={selected.size}
+            onClearSelection={() => setSelected(new Set())}
+          />
+        </Panel>
+      )}
     </div>
   );
 }

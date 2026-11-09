@@ -15,6 +15,9 @@ import { useMemo, useState } from "react";
 import type { Locale, SafetyClass, SoftwareItem, SourceKind } from "../types";
 import { formatBytes, kindLabel, safetyLabel, translator } from "../i18n";
 import { Button, Panel, SafetyBadge, Tag } from "./primitives";
+import { Pager } from "./Pager";
+import { usePaged } from "../pagination";
+import { fold } from "../search";
 
 export type SortBy = "name" | "size" | "safety" | "publisher" | "kind" | "installDate";
 
@@ -63,7 +66,7 @@ export function SoftwareTable({
   const [detail, setDetail] = useState<SoftwareItem | null>(null);
 
   const visible = useMemo(() => {
-    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    const terms = fold(query).split(" ").filter(Boolean);
     const filtered = items.filter((item) => {
       if (kind && item.source !== kind) return false;
       if (safety && item.safety !== safety) return false;
@@ -76,9 +79,9 @@ export function SoftwareTable({
           item.packageFamilyName,
         ]
           .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-        if (!terms.every((term) => haystack.includes(term))) return false;
+          .join(" ");
+        const folded = fold(haystack);
+        if (!terms.every((term) => folded.includes(term))) return false;
       }
       return true;
     });
@@ -111,6 +114,7 @@ export function SoftwareTable({
   }, [items, query, kind, safety, sortBy, locale]);
 
   const selectableCount = items.filter((i) => i.safety === "safe").length;
+  const paged = usePaged("software", visible, `${query}|${kind}|${safety}|${sortBy}|${items.length}`);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
@@ -171,14 +175,15 @@ export function SoftwareTable({
       </div>
 
       {/* ------------------------------------------------------------ table */}
-      <Panel padded={false} className="min-h-0 flex-1 overflow-y-auto">
+      <Panel padded={false} className="flex min-h-0 flex-1 flex-col overflow-hidden">
+        <div className="min-h-0 flex-1 overflow-y-auto" tabIndex={0} aria-label={t("pager.software")}>
         {visible.length === 0 ? (
           <p className="p-8 text-center text-sm" style={{ color: "var(--text-muted)" }}>
             {t("scan.noResults")}
           </p>
         ) : (
           <ul>
-            {visible.map((item) => {
+            {paged.pageItems.map((item) => {
               const isSelected = selected.has(item.id);
               const isBlocked = item.safety === "critical";
               const needsConfirm =
@@ -270,6 +275,15 @@ export function SoftwareTable({
             })}
           </ul>
         )}
+        </div>
+        <Pager
+          paged={paged}
+          locale={locale}
+          label={t("pager.software")}
+          unfilteredTotal={items.length}
+          selectedCount={selected.size}
+          onClearSelection={onClearSelection}
+        />
       </Panel>
 
       {detail && (
