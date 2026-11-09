@@ -65,12 +65,17 @@
           "English",
           "Vietnamese"
         ],
-        "displayLanguageSelector": true
+        "displayLanguageSelector": true,
+        "installerIcon": "icons/icon.ico",
+        "headerImage": "installer/nsis-header.bmp",
+        "sidebarImage": "installer/nsis-sidebar.bmp"
       },
       "wix": {
         "language": [
           "en-US"
-        ]
+        ],
+        "bannerPath": "installer/wix-banner.bmp",
+        "dialogImagePath": "installer/wix-dialog.bmp"
       }
     },
     "createUpdaterArtifacts": true
