@@ -66,13 +66,13 @@ export function RunPanel({
   const statusColour = (status?: LogLine["status"]) => {
     switch (status) {
       case "failed":
-        return "#b3261e";
+        return "var(--danger)";
       case "skipped":
         return "var(--text-muted)";
       case "simulated":
-        return "var(--color-dev-500)";
+        return "var(--warning)";
       case "succeeded":
-        return "var(--color-tsu-500)";
+        return "var(--success)";
       default:
         return "var(--text-secondary)";
     }

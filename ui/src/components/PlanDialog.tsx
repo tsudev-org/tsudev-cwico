@@ -79,7 +79,7 @@ export function PlanDialog({
                   className="flex items-center gap-2 text-[13px]"
                   style={{ color: "var(--text-secondary)" }}
                 >
-                  <span style={{ color: "var(--color-tsu-500)" }}>✓</span>
+                  <span style={{ color: "var(--success)" }}>✓</span>
                   {step.kind === "createRestorePoint"
                     ? t("plan.restorePoint")
                     : t("plan.registryBackup")}
@@ -107,11 +107,11 @@ export function PlanDialog({
                 style={{
                   borderColor:
                     rejection.code === "protected_component"
-                      ? "color-mix(in srgb, #b3261e 35%, transparent)"
+                      ? "color-mix(in srgb, var(--danger) 35%, transparent)"
                       : "var(--border-subtle)",
                   background:
                     rejection.code === "protected_component"
-                      ? "color-mix(in srgb, #b3261e 7%, transparent)"
+                      ? "color-mix(in srgb, var(--danger) 7%, transparent)"
                       : "var(--surface-sunken)",
                 }}
               >

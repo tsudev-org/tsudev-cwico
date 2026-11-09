@@ -56,9 +56,9 @@ export function AboutView({
         <h3 className="mb-3 text-sm font-semibold">{t("about.safetyDb")}</h3>
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: t("safety.safe"), value: info.safeRules, colour: "var(--color-tsu-500)" },
-            { label: t("safety.caution"), value: info.cautionRules, colour: "var(--color-dev-500)" },
-            { label: t("safety.critical"), value: info.criticalRules, colour: "#b3261e" },
+            { label: t("safety.safe"), value: info.safeRules, colour: "var(--success)" },
+            { label: t("safety.caution"), value: info.cautionRules, colour: "var(--warning)" },
+            { label: t("safety.critical"), value: info.criticalRules, colour: "var(--danger)" },
           ].map((cell) => (
             <div
               key={cell.label}

@@ -11,6 +11,8 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
+    // index.css imports the read-only token sheet from ../.standards/tokens/.
+    fs: { allow: [".."] },
     watch: {
       // The Rust side has its own rebuild loop; watching it here just burns
       // file descriptors.
