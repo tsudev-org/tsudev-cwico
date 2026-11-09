@@ -1,5 +1,5 @@
 # Build website (cwico.tsudev.com) và kiểm tra nhận diện/CSP/liên kết/khả năng truy cập cho mỗi thay đổi liên quan.
-# Deploy lên Cloudflare Pages do chủ repo chạy: cd website && npm ci && npm run deploy (xem website/README.md).
+# Deploy (Cloudflare Workers Static Assets) do chủ repo chạy: cd website && npm ci && npm run deploy (xem website/README.md).
 name: Website
 
 on:

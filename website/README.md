@@ -1,7 +1,9 @@
 # Website cwico.tsudev.com
 
-Trang sản phẩm của cwico: [Astro](https://astro.build) dựng trang tĩnh, host trên Cloudflare Pages (dự án
-`tsudev-cwico`, tên miền `cwico.tsudev.com`).
+Trang sản phẩm của cwico: [Astro](https://astro.build) dựng trang tĩnh, host trên **Cloudflare Workers Static Assets**
+(Worker `tsudev-cwico-website`, chỉ tài sản tĩnh, không có mã chạy phía máy chủ; tên miền `cwico.tsudev.com` gắn bằng
+`custom_domain` trong `wrangler.jsonc`). Không dùng Pages: wrangler 4.15x chuyển lệnh tạo dự án Pages mới sang Workers
+và tự cài adapter SSR - xem chú thích trong `wrangler.jsonc`.
 
 * **Một nguồn chân lý.** Số quy tắc, danh mục quy tắc và tinh chỉnh đọc từ `data/safety-db.json`, `data/tweaks.json`
   lúc build; trang Cơ chế an toàn là mục "Cơ chế an toàn" của `docs/README.vi.md`; Nhật ký và Bảo mật là
@@ -22,7 +24,7 @@ npm ci
 npm run dev          # xem thử ở http://localhost:4321
 npm run build        # dựng vào dist/ và kiểm tra
 npm run check:a11y   # axe-core WCAG 2.2 AA mọi trang, sáng + tối (lần đầu: npx playwright install chromium)
-npm run deploy       # build rồi đưa lên Cloudflare Pages (cần `npx wrangler login` với tài khoản tsudev)
+npm run deploy       # build rồi wrangler deploy (cần `npx wrangler login` với tài khoản tsudev)
 ```
 
 Sau mỗi lần phát hành bản mới hoặc sửa `data/*.json`, chạy lại `npm run deploy` để trang cập nhật.
@@ -33,3 +35,6 @@ Sinh lại tài sản thương hiệu (khi thương hiệu đổi):
 python3 -m venv /tmp/v && /tmp/v/bin/pip install pillow
 /tmp/v/bin/python website/scripts/brand_assets.py --tsudev ~/projects/tsudev --fonts <thư mục BeVietnamPro-*.ttf>
 ```
+
+Ghi chú vận hành: vùng `tsudev.com` bật Cloudflare Web Analytics tự chèn `beacon.min.js`; CSP của trang này chặn nó (lỗi
+console vô hại, không gửi dữ liệu). Muốn tắt hẳn thì tắt tự chèn cho host này ở cấu hình vùng, không nới CSP.

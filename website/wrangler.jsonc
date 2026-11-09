@@ -1,0 +1,20 @@
+// cwico.tsudev.com - Cloudflare Workers Static Assets, KHÔNG có mã chạy phía máy chủ (không "main").
+// Trang tĩnh do Astro dựng vào dist/; header bảo mật đọc từ dist/_headers.
+// Vì sao không phải Pages: wrangler 4.15x chuyển lệnh tạo dự án Pages mới sang Workers và tự cài adapter SSR
+// (@astrojs/cloudflare) - thứ trang tĩnh này không cần. Gói miễn phí: yêu cầu tới tài sản tĩnh không tính vào
+// hạn mức 100.000 lượt/ngày của Workers.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tsudev-cwico-website",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "force-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  // custom_domain: wrangler tự tạo bản ghi DNS và chứng chỉ cho tên miền con trong vùng tsudev.com.
+  "routes": [{ "pattern": "cwico.tsudev.com", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": false }
+}

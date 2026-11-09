@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "node scripts/sync-content.mjs && astro build && node scripts/check-dist.mjs",
     "preview": "astro preview",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name tsudev-cwico --branch main --commit-dirty=true",
+    "deploy": "npm run build && wrangler deploy",
     "check:a11y": "node scripts/check-a11y.mjs"
   },
   "dependencies": {
