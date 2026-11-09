@@ -1,0 +1,28 @@
+---
+// Ô tìm và các nhóm lọc cho một danh mục. Khi tắt JavaScript, khối này vẫn ẩn (thuộc tính hidden)
+// và danh mục hiện đầy đủ - không mất nội dung. /js/loc.js bỏ hidden và gắn hành vi.
+interface Nhom { ten: string; nhan: string; chon: { gt: string; nhan: string; so: number }[] }
+interface Props { id: string; nhan: string; goiY: string; nhom: Nhom[]; tong: number; danhMuc: string }
+const { id, nhan, goiY, nhom, tong, danhMuc } = Astro.props;
+---
+<form class="loc" role="search" aria-label={nhan} data-loc={danhMuc} hidden>
+  <div class="loc__tim">
+    <label for={`${id}-q`}>{nhan}</label>
+    <input id={`${id}-q`} name="q" type="search" autocomplete="off" spellcheck="false" placeholder={goiY} aria-describedby={`${id}-kq`}>
+    <kbd class="loc__phim" aria-hidden="true">/</kbd>
+  </div>
+  {nhom.map((n) => (
+    <fieldset class="loc__nhom">
+      <legend>{n.nhan}</legend>
+      <label class="chip"><input type="radio" name={n.ten} value="" checked> Tất cả</label>
+      {n.chon.map((c) => (
+        <label class="chip"><input type="radio" name={n.ten} value={c.gt}> {c.nhan} <span class="chip__so">{c.so}</span></label>
+      ))}
+    </fieldset>
+  ))}
+  <p class="loc__kq" id={`${id}-kq`} role="status" aria-live="polite" data-tong={tong}>{tong} mục</p>
+</form>
+<div class="loc__rong" data-rong={danhMuc} hidden>
+  <p><strong data-rong-text></strong></p>
+  <p>Kiểm tra chính tả, thử từ khóa ngắn hơn hoặc bỏ bớt bộ lọc. Gõ không dấu cũng được: <em>dich vu</em> khớp <em>dịch vụ</em>.</p>
+</div>

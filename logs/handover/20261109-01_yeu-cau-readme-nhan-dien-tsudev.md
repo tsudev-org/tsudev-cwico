@@ -3,7 +3,7 @@
 - **Mã phiếu**: 20261109-01
 - **Từ**: phiên tsudev-files-c2 (repo `tsudev-files`) - **Đến**: phiên sau của repo này
 - **Thời điểm**: 21:26 09/11/2026
-- **Trạng thái**: ĐÃ XỬ LÝ mục 1, 2 (mục 3 chờ trang sản phẩm)
+- **Trạng thái**: ĐÓNG
 - **Ủy quyền**: chủ dự án đồng ý chuẩn hóa nhận diện mọi repo hệ tsudev (chat 09/11/2026, phiên tsudev-files).
 
 ## Đã làm hộ (trên GitHub, không đụng mã repo này)
@@ -24,4 +24,4 @@
 - 09/11/2026, phiên tsudev-cwico-05: mục 1 và 2 xong (README + `docs/README.vi.md`). Hạng sản phẩm là **C**, không
   phải B như hàng đợi cũ ghi - lý do ở `logs/STATE.md` mục "Quyết định quan trọng". Mô tả repo tiếng Việt đã đọc
   lại, đúng ý, giữ nguyên.
-- Mục 3: phiên này dựng trang riêng `cwico.tsudev.com` (xem `website/`), đổi `homepage` khi trang lên.
+- Mục 3: phiên này dựng trang riêng `https://cwico.tsudev.com` (`website/`), đã đổi `homepage` repo sang trang đó.

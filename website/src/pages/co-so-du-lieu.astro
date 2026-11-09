@@ -1,0 +1,55 @@
+---
+import Trang from '../layouts/Trang.astro';
+import BoLoc from '../components/BoLoc.astro';
+import { chuanHoa, CSDL, demLop, REPO_URL, TEN_LOP, tenQuyTac, type LopAnToan } from '../lib/noi-dung';
+
+const THU_TU: Record<LopAnToan, number> = { critical: 0, caution: 1, safe: 2 };
+const quyTac = [...CSDL.rules].sort(
+  (a, b) => THU_TU[a.class] - THU_TU[b.class] || tenQuyTac(a).vi.localeCompare(tenQuyTac(b).vi, 'vi'),
+);
+const dem = demLop();
+const [y, m, d] = CSDL.updated.split('-');
+const tim = (r: (typeof quyTac)[number]) =>
+  chuanHoa([tenQuyTac(r).vi, tenQuyTac(r).en, r.reason.vi, r.description?.vi ?? '', r.id, ...(r.tags ?? []), ...(r.processes ?? []), ...(r.services ?? [])].join(' '));
+---
+<Trang tieuDe="Cơ sở dữ liệu an toàn" moTa={`Tra cứu ${CSDL.rules.length} quy tắc phân loại của cwico: phần mềm nào An toàn, Cẩn trọng hay Trọng yếu khi gỡ trên Windows, kèm lý do và thứ được dọn.`} duongDan="/co-so-du-lieu/" coLoc>
+  <div class="khung trang-hep">
+    <h1>Cơ sở dữ liệu an toàn</h1>
+    <p class="dan">Mỗi mục cwico tìm thấy được đối chiếu với các quy tắc dưới đây. Bản <strong>{CSDL.version}</strong>, cập nhật {d}/{m}/{y}, gồm {CSDL.rules.length} quy tắc: {dem.critical} Trọng yếu, {dem.caution} Cẩn trọng, {dem.safe} An toàn. Mục không khớp quy tắc nào là <strong>Chưa rõ</strong> và luôn phải xác nhận riêng.</p>
+    <p class="dan">Nguồn: <a href={`${REPO_URL}/blob/main/data/safety-db.json`} target="_blank" rel="noopener noreferrer">data/safety-db.json</a>. Thấy quy tắc sai hoặc thiếu? <a href={`${REPO_URL}/issues/new`} target="_blank" rel="noopener noreferrer">Báo cho dự án</a> - phân loại thận trọng: một mục Cẩn trọng thừa chỉ tốn một cú nhấp, một mục An toàn sai làm người dùng mất tính năng.</p>
+
+    <BoLoc id="qt" danhMuc="quy-tac" nhan="Tìm quy tắc" goiY="Ví dụ: onedrive, edge, xbox, telemetry, defender" tong={quyTac.length}
+      nhom={[{ ten: 'lop', nhan: 'Mức an toàn', chon: (['critical', 'caution', 'safe'] as const).map((k) => ({ gt: k, nhan: TEN_LOP[k].ten, so: dem[k] })) }]} />
+
+    <ul class="danh-muc" data-danh-muc="quy-tac">
+      {quyTac.map((r) => {
+        const mt = r.match;
+        return (
+          <li class="muc-dm" id={r.id} data-lop={r.class} data-tim={tim(r)}>
+            <div class="muc-dm__dau">
+              <h2 data-hl>{tenQuyTac(r).vi}</h2>
+              <span class="huy-hieu" data-lop={r.class}>{TEN_LOP[r.class].ten}</span>
+            </div>
+            <p class="muc-dm__ly-do" data-hl>{r.reason.vi}</p>
+            {r.description && r.description.vi !== r.reason.vi && <p class="muc-dm__mo-ta" data-hl>{r.description.vi}</p>}
+            <details class="muc-dm__ky-thuat">
+              <summary>Chi tiết kỹ thuật <code>{r.id}</code></summary>
+              <dl>
+                {mt.exact?.length ? <><dt>Khớp đúng tên</dt><dd>{mt.exact.map((x) => <code>{x}</code>)}</dd></> : null}
+                {mt.contains?.length ? <><dt>Tên có chứa</dt><dd>{mt.contains.map((x) => <code>{x}</code>)}</dd></> : null}
+                {mt.regex?.length ? <><dt>Biểu thức chính quy</dt><dd>{mt.regex.map((x) => <code>{x}</code>)}</dd></> : null}
+                {mt.kinds?.length ? <><dt>Chỉ áp cho loại</dt><dd>{mt.kinds.map((x) => <code>{x}</code>)}</dd></> : null}
+                {r.processes?.length ? <><dt>Tiến trình dừng trước khi gỡ</dt><dd>{r.processes.map((x) => <code>{x}</code>)}</dd></> : null}
+                {r.services?.length ? <><dt>Dịch vụ</dt><dd>{r.services.map((x) => <code>{x}</code>)}</dd></> : null}
+                {r.tasks?.length ? <><dt>Tác vụ lập lịch</dt><dd>{r.tasks.map((x) => <code>{x}</code>)}</dd></> : null}
+                {r.leftovers?.paths?.length ? <><dt>Thư mục dọn tận gốc</dt><dd>{r.leftovers.paths.map((x) => <code>{x}</code>)}</dd></> : null}
+                {r.leftovers?.registry?.length ? <><dt>Khóa Registry dọn tận gốc</dt><dd>{r.leftovers.registry.map((x) => <code>{x}</code>)}</dd></> : null}
+                {r.label && r.label.en !== r.label.vi ? <><dt>Tên tiếng Anh</dt><dd>{r.label.en}</dd></> : null}
+              </dl>
+            </details>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</Trang>

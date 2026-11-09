@@ -1,0 +1,10 @@
+---
+import Trang from '../layouts/Trang.astro';
+import TaiLieu from '../components/TaiLieu.astro';
+import { docTep, renderMd, REPO_URL } from '../lib/noi-dung';
+
+const html = renderMd(docTep('CHANGELOG.md'), 'CHANGELOG.md');
+---
+<Trang tieuDe="Nhật ký thay đổi" moTa="Lịch sử phát hành của cwico: thay đổi, sửa lỗi và cập nhật cơ sở dữ liệu an toàn qua từng phiên bản, kèm quy ước đặt tên phiên bản theo ngày." duongDan="/nhat-ky/">
+  <TaiLieu tieuDe="Nhật ký thay đổi" html={html} ghiChu="Nhật ký được viết bằng tiếng Anh, lấy nguyên văn từ CHANGELOG.md của repo." nguon={{ ten: 'CHANGELOG.md', url: `${REPO_URL}/blob/main/CHANGELOG.md` }} />
+</Trang>

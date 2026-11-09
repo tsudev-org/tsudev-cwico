@@ -1,0 +1,71 @@
+---
+import Trang from '../layouts/Trang.astro';
+import BoLoc from '../components/BoLoc.astro';
+import { chuanHoa, REPO_URL, TEN_LOP, TEN_NHOM, TINH_CHINH } from '../lib/noi-dung';
+
+type Op = Record<string, unknown> & { op: string };
+const ds = TINH_CHINH.tweaks;
+const nhom = Object.keys(TEN_NHOM).filter((k) => ds.some((x) => x.category === k));
+const tweaks = [...ds].sort(
+  (a, b) => nhom.indexOf(a.category) - nhom.indexOf(b.category) || Number(!!b.recommended) - Number(!!a.recommended),
+);
+const dem = (f: (x: (typeof ds)[number]) => boolean) => ds.filter(f).length;
+
+/** Một thao tác -> một dòng người đọc được. */
+function moTaOp(o: Op): string {
+  switch (o.op) {
+    case 'setRegistryValue':
+      return `Đặt ${o.key}\\${o.name} = ${o.value} (${o.kind})`;
+    case 'deleteRegistryValue':
+      return `Xóa giá trị ${o.key}\\${o.name}`;
+    case 'setServiceStartup':
+      return `Dịch vụ ${o.service}: kiểu khởi động ${o.startType}`;
+    case 'runCommand':
+      return `Chạy ${o.program} ${(o.args as string[]).join(' ')}`;
+    case 'setPowerScheme':
+      return `Chuyển gói nguồn điện ${o.scheme}`;
+    default:
+      return o.op;
+  }
+}
+---
+<Trang tieuDe="Tinh chỉnh hệ thống" moTa={`${ds.length} tinh chỉnh Windows trong cwico: quyền riêng tư, hiệu năng, File Explorer, chơi game. Mỗi mục ghi rõ thao tác áp dụng và cách hoàn tác.`} duongDan="/tinh-chinh/" coLoc>
+  <div class="khung trang-hep">
+    <h1>Tinh chỉnh hệ thống</h1>
+    <p class="dan">{ds.length} thay đổi chọn riêng từng mục, thay cho mười hai bước cố định của kịch bản PowerShell cũ. Mỗi tinh chỉnh có mức an toàn, lời giải thích cái giá phải trả, và <strong>đường hoàn tác</strong> chạy được từ chính ứng dụng. {dem((x) => !!x.recommended)} mục được đề xuất bật sẵn.</p>
+    <p class="dan">Nguồn: <a href={`${REPO_URL}/blob/main/data/tweaks.json`} target="_blank" rel="noopener noreferrer">data/tweaks.json</a>.</p>
+
+    <BoLoc id="tc" danhMuc="tinh-chinh" nhan="Tìm tinh chỉnh" goiY="Ví dụ: telemetry, quảng cáo, ngủ đông, phần mở rộng" tong={ds.length}
+      nhom={[
+        { ten: 'nhom', nhan: 'Nhóm', chon: nhom.map((k) => ({ gt: k, nhan: TEN_NHOM[k], so: dem((x) => x.category === k) })) },
+        { ten: 'lop', nhan: 'Mức an toàn', chon: (['safe', 'caution'] as const).map((k) => ({ gt: k, nhan: TEN_LOP[k].ten, so: dem((x) => x.safety === k) })) },
+      ]} />
+
+    <ul class="danh-muc" data-danh-muc="tinh-chinh">
+      {tweaks.map((x) => (
+        <li class="muc-dm" id={x.id} data-nhom={x.category} data-lop={x.safety}
+          data-tim={chuanHoa([x.title.vi, x.title.en, x.description.vi, x.id, TEN_NHOM[x.category] ?? '', ...(x.tags ?? [])].join(' '))}>
+          <div class="muc-dm__dau">
+            <h2 data-hl>{x.title.vi}</h2>
+            <span class="huy-hieu" data-lop={x.safety}>{TEN_LOP[x.safety].ten}</span>
+          </div>
+          <p class="muc-dm__nhan">
+            <span>{TEN_NHOM[x.category] ?? x.category}</span>
+            {x.recommended && <span>Đề xuất</span>}
+            {x.requiresRestart && <span>Cần khởi động lại</span>}
+          </p>
+          <p class="muc-dm__ly-do" data-hl>{x.description.vi}</p>
+          <details class="muc-dm__ky-thuat">
+            <summary>Thao tác và hoàn tác <code>{x.id}</code></summary>
+            <dl>
+              <dt>Khi áp dụng</dt>
+              <dd><ul>{(x.apply as Op[]).map((o) => <li><code>{moTaOp(o)}</code></li>)}</ul></dd>
+              <dt>Khi hoàn tác</dt>
+              <dd><ul>{(x.revert as Op[]).map((o) => <li><code>{moTaOp(o)}</code></li>)}</ul></dd>
+            </dl>
+          </details>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Trang>

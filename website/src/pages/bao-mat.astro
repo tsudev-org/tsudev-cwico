@@ -1,0 +1,12 @@
+---
+import Trang from '../layouts/Trang.astro';
+import TaiLieu from '../components/TaiLieu.astro';
+import { docTep, renderMd, REPO_URL } from '../lib/noi-dung';
+
+const html = renderMd(docTep('SECURITY.md'), 'SECURITY.md');
+---
+<Trang tieuDe="Bảo mật" moTa="Chính sách bảo mật của cwico: phiên bản được hỗ trợ, cách báo cáo lỗ hổng riêng tư qua GitHub, phạm vi lỗi bảo mật và các cam kết thiết kế." duongDan="/bao-mat/">
+  <TaiLieu tieuDe="Chính sách bảo mật" html={html} ghiChu="Chính sách viết bằng tiếng Anh, lấy nguyên văn từ SECURITY.md của repo." nguon={{ ten: 'SECURITY.md', url: `${REPO_URL}/blob/main/SECURITY.md` }}>
+    <p slot="dau" class="chu-y">Phát hiện lỗ hổng? Báo riêng qua <a href={`${REPO_URL}/security/advisories/new`} target="_blank" rel="noopener noreferrer">GitHub Security Advisories</a>, đừng mở issue công khai. Thông tin liên hệ máy đọc được ở <a href="/.well-known/security.txt">security.txt</a>.</p>
+  </TaiLieu>
+</Trang>

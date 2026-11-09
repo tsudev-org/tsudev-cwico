@@ -1,0 +1,84 @@
+---
+import Trang from '../layouts/Trang.astro';
+import { REPO_URL } from '../lib/noi-dung';
+
+const lenh = [
+  { l: 'scan', d: 'Rà quét máy và phân loại mọi thứ tìm được. Chỉ đọc.' },
+  { l: 'plan', d: 'Cho biết gỡ các mục đã chọn sẽ làm gì, từng bước. Không thay đổi gì.' },
+  { l: 'remove', d: 'Gỡ các mục đã chọn. Chỉ chạy thử, trừ khi có --apply.' },
+  { l: 'tweaks', d: 'Liệt kê danh mục tinh chỉnh hệ thống.' },
+  { l: 'info', d: 'Nền tảng, quyền quản trị, số quy tắc trong cơ sở dữ liệu an toàn.' },
+];
+const co = [
+  { n: 'Chọn mục (plan, remove)', ds: [
+    ['--id <ID>', 'Chọn một mục theo id. Lặp lại được.'],
+    ['--name <TEXT>', 'Chọn mọi mục có tên chứa TEXT, khớp theo ranh giới từ: --name Edge chọn Microsoft Edge, không chọn nhầm Acme Ledger.'],
+    ['--safe-only', 'Chọn mọi mục An toàn. Không bao giờ chọn mục Cẩn trọng, Chưa rõ hay Trọng yếu.'],
+    ['--confirm', 'Xác nhận mục Cẩn trọng và Chưa rõ. Thiếu cờ này, các mục đó được báo lại và bỏ qua.'],
+  ] },
+  { n: 'Rà quét', ds: [
+    ['--quick', 'Chỉ chương trình đã cài và gói AppX.'],
+    ['--deep', 'Mọi lượt, kể cả phần còn sót và đo dung lượng đĩa.'],
+    ['--kind <KIND>', 'Lọc theo loại: reg, appx, appxprov, svc, task, startup.'],
+    ['--safety <CLASS>', 'Lọc theo mức: safe, caution, unknown, critical.'],
+    ['--search <TEXT>', 'Lọc theo tên, nhà phát hành hoặc định danh.'],
+  ] },
+  { n: 'Đầu ra', ds: [
+    ['--json', 'Đầu ra máy đọc được trên stdout - dùng cho kiểm toán và tự động hóa.'],
+    ['--locale <vi|en>', 'Ngôn ngữ của lý do và mô tả (mặc định vi).'],
+    ['--quiet', 'Chỉ in lỗi.'],
+  ] },
+  { n: 'Gỡ bỏ', ds: [
+    ['--apply', 'Thực sự thay đổi máy. Thiếu cờ này mọi lệnh chỉ là chạy thử.'],
+    ['--deep-clean', 'Dọn cả thư mục và khóa Registry còn sót, qua bộ chặn xóa.'],
+    ['--no-restore-point', 'Bỏ điểm khôi phục hệ thống. Không khuyến nghị: lượt chạy khi đó không có đường lui một cú nhấp.'],
+    ['--backup-dir <DIR>', 'Nơi lưu bản .reg và nhật ký giao dịch (mặc định %LOCALAPPDATA%\\tsudev-cwico\\backups).'],
+  ] },
+];
+---
+<Trang tieuDe="Dòng lệnh" moTa="Dùng cwico từ dòng lệnh: rà quét, xuất JSON để kiểm toán, xem kế hoạch gỡ và gỡ phần mềm thừa trên Windows. Mọi lệnh chỉ chạy thử cho tới khi có --apply." duongDan="/dong-lenh/">
+  <div class="khung tai-lieu">
+    <nav class="tai-lieu__menu" aria-label="Dòng lệnh">
+      <p>Dòng lệnh</p>
+      <ul>
+        <li><a href="#cai-dat">Cài đặt</a></li>
+        <li><a href="#lenh">Lệnh</a></li>
+        <li><a href="#vi-du">Ví dụ</a></li>
+        {co.map((c, i) => <li><a href={`#co-${i}`}>{c.n}</a></li>)}
+      </ul>
+    </nav>
+    <article class="van-ban">
+      <h1>Dùng cwico từ dòng lệnh</h1>
+      <p><code>cwico</code> là giao diện không cửa sổ của cùng bộ máy với ứng dụng desktop: cùng cơ sở dữ liệu an toàn, cùng cổng lập kế hoạch, cùng bộ chặn xóa. Không có cờ nào vượt qua được lớp Trọng yếu.</p>
+      <div class="chu-y"><p><strong>Mọi lệnh chỉ chạy thử cho tới khi có <code>--apply</code>.</strong> Hãy bắt đầu bằng <code>cwico plan</code> - lệnh này không thay đổi gì trên máy.</p></div>
+
+      <h2 id="cai-dat">Cài đặt</h2>
+      <p>Bản dòng lệnh hiện được build từ mã nguồn bằng <a href="https://rustup.rs/" target="_blank" rel="noopener noreferrer">Rust</a> (1.82 trở lên). Trên Windows:</p>
+      <pre tabindex="0"><code>cargo install --git {REPO_URL} cwico-cli</code></pre>
+      <p>Chạy trong cửa sổ Terminal mở bằng quyền Administrator để kết quả quét đầy đủ.</p>
+
+      <h2 id="lenh">Lệnh</h2>
+      <div class="bang" tabindex="0"><table>
+        <thead><tr><th scope="col">Lệnh</th><th scope="col">Làm gì</th></tr></thead>
+        <tbody>{lenh.map((x) => <tr><td><code>cwico {x.l}</code></td><td>{x.d}</td></tr>)}</tbody>
+      </table></div>
+
+      <h2 id="vi-du">Ví dụ</h2>
+      <pre tabindex="0"><code>cwico info                                   # nền tảng, quyền, số quy tắc
+cwico scan --safety safe                     # những gì an toàn để gỡ
+cwico scan --json &gt; inventory.json           # xuất dữ liệu để kiểm toán
+cwico plan --safe-only --deep-clean          # xem trước điều sẽ xảy ra
+cwico remove --name OneDrive --deep-clean    # chạy thử
+cwico remove --name OneDrive --deep-clean --apply</code></pre>
+
+      {co.map((c, i) => (
+        <>
+          <h2 id={`co-${i}`}>{c.n}</h2>
+          <dl class="co">
+            {c.ds.map(([k, v]) => <><dt><code>{k}</code></dt><dd>{v}</dd></>)}
+          </dl>
+        </>
+      ))}
+    </article>
+  </div>
+</Trang>

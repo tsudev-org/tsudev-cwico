@@ -15,7 +15,7 @@ Một sản phẩm của [tsudev](https://tsudev.com).
 [![Rust](https://img.shields.io/badge/rust-1.82%2B-ef6d18)](https://www.rust-lang.org)
 [![Quy tắc an toàn](https://img.shields.io/badge/quy%20t%E1%BA%AFc%20an%20to%C3%A0n-58-2482bd)](../data/safety-db.json)
 
-[tsudev.com](https://tsudev.com) · [Bắt đầu](#bắt-đầu) · [Cơ chế an toàn](#cơ-chế-an-toàn) · [English](../README.md)
+[Website](https://cwico.tsudev.com) · [tsudev.com](https://tsudev.com) · [Bắt đầu](#bắt-đầu) · [Cơ chế an toàn](#cơ-chế-an-toàn) · [English](../README.md)
 
 </div>
 
