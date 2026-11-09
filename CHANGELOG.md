@@ -24,6 +24,22 @@ release-of-day counter:
 `tools/version.py` is the only thing that should ever compute a version;
 `tools/test_version.py` checks the mapping still sorts in release order.
 
+## Unreleased
+
+### Fixed
+
+- **The window went blank after the first scan of a real machine.** Empty
+  `extra` and `executables` were left out of the JSON the engine sends the UI,
+  which types them as required; one item without them unmounted the whole
+  interface. The same gap in `RunReport.warnings` would have blanked the run
+  panel after every clean removal. Both are now always sent, and
+  `tests/ipc_contract.rs` pins the contract. Found by running 26.8.1901 on
+  Windows 11 Pro 25H2 - the first live run of this tool.
+- A render error now shows a bilingual error screen with the details and a
+  Reload button instead of an empty window.
+- Window title, installer copyright and long description no longer contain
+  escaped em-dashes; copyright reads `Copyright (c) 2026 tsudev`.
+
 ## tsudev-cwico-v26.8.19 - 2026-08-19
 
 > **Read this before installing.** This build compiles, passes 136 tests and

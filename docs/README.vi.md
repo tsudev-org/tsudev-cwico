@@ -237,10 +237,13 @@ từ, nên `--name Edge` chọn *Microsoft Edge* chứ không chọn nhầm
 
 Đã sẵn sàng, chờ điều chỉ bạn cung cấp được:
 
-- [ ] **Chạy thử trên Windows thật.** Mọi thứ compile và test pass trên runner
-      Windows, nhưng chưa phiên bản nào thực sự gọi `SRSetRestorePointW` hay
-      service control manager trên máy sống. Hãy bắt đầu bằng `cwico plan` -
-      lệnh này không thay đổi gì.
+- [ ] **Chạy thử trên Windows thật - phần gỡ bỏ.** Nửa chỉ-đọc đã chạy trên
+      máy thật (Windows 11 Pro 25H2, 09/11/2026, không quyền quản trị):
+      `cwico info` và `cwico scan` tìm 631 mục trong 2,6 giây, và lần quét thật
+      đầu tiên đó lộ ra lỗi giao diện sập mà dữ liệu mẫu che mất - đã sửa, kèm
+      kiểm thử hợp đồng. Chưa có gì thực sự gọi `SRSetRestorePointW`, trình gỡ
+      cài đặt hay service control manager ở chế độ ghi. Bước tiếp: `cwico plan`
+      với quyền quản trị - lệnh này vẫn không thay đổi gì.
 - [ ] **Ký số.** Bộ cài chưa ký vẫn chạy được, nhưng SmartScreen sẽ cảnh báo ở
       lần mở đầu - ấn tượng không tốt với công cụ đòi quyền Administrator.
       Đặt `TAURI_SIGNING_PRIVATE_KEY` trong repository secrets.

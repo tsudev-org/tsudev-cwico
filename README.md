@@ -15,7 +15,7 @@ Một sản phẩm của [tsudev](https://tsudev.com).
 [![License: MIT](https://img.shields.io/badge/license-MIT-2482bd)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-1.82%2B-ef6d18)](https://www.rust-lang.org)
 [![Safety rules](https://img.shields.io/badge/safety%20rules-58-2482bd)](data/safety-db.json)
-[![Tests](https://img.shields.io/badge/tests-136-2482bd)](#tests)
+[![Tests](https://img.shields.io/badge/tests-140-2482bd)](#tests)
 
 [tsudev.com](https://tsudev.com) · [Quick start](#quick-start) · [Safety model](#the-safety-model) · [Tiếng Việt](docs/README.vi.md)
 
@@ -294,7 +294,7 @@ everywhere.
 cargo test
 ```
 
-**136 tests.** The ones that matter most:
+**140 tests.** The ones that matter most:
 
 * `selecting_everything_still_cannot_remove_a_critical_component` - ticks every
   row, confirms every prompt, presses go, and asserts Defender and RPC survive.
@@ -305,6 +305,9 @@ cargo test
 * `shared_host_processes_are_never_terminated`
 * `an_unquoted_program_path_containing_spaces_is_not_split`
 * `nsis_uninstall_exe_is_not_mistaken_for_inno_setup`
+* `every_scanned_item_carries_the_collections_the_ui_requires` - pins the JSON
+  the engine hands the UI to `ui/src/types.ts`; the first real scan found the
+  gap the fixtures hid.
 
 ---
 
@@ -326,10 +329,13 @@ block until a confirmed newer release is installed - see
 
 Ready, but waiting on something only a human can supply:
 
-- [ ] **Runtime testing on real Windows.** Everything compiles and its tests
-      pass on a Windows runner, but no version of this has yet driven
-      `SRSetRestorePointW` or the service control manager on a live machine.
-      Start with `cwico plan`, which changes nothing.
+- [ ] **Runtime testing on real Windows - removal path.** The read-only half
+      has now run on a live machine (Windows 11 Pro 25H2, 09/11/2026, without
+      elevation): `cwico info` and `cwico scan` found 631 items in 2.6 s, and
+      that first real scan exposed a UI crash the fixtures had hidden - fixed,
+      with a contract test. Nothing has yet driven `SRSetRestorePointW`, an
+      uninstaller or the service control manager in write mode. Next step:
+      elevated `cwico plan`, which still changes nothing.
 - [ ] **Code signing (Authenticode).** Unsigned installers work, but
       SmartScreen warns on first run - a poor first impression for a tool that
       then asks for Administrator, and it trains users to click through the
