@@ -11,7 +11,7 @@ can see what was agreed to.
 ## Project
 
 **Name:** tsudev-cwico
-**Repository:** https://github.com/tsudev-tsudev/tsudev-cwico
+**Repository:** https://github.com/tsudev-org/tsudev-cwico
 **Website:** https://tsudev.com
 **Licence:** MIT (OSI-approved, no commercial dual-licensing)
 **Language:** Rust, TypeScript

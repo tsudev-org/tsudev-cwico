@@ -1,10 +1,7 @@
 <div align="center">
 
 <a href="https://tsudev.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/tsudev-wordmark-dark.png">
-    <img src="assets/brand/tsudev-wordmark.png" alt="tsudev" width="320">
-  </picture>
+  <img src="assets/brand/tsudev-logo.png" alt="tsudev" width="96">
 </a>
 
 <h1>cwico</h1>
@@ -12,7 +9,9 @@
 **Deep Windows debloater &amp; software removal toolkit**<br>
 *Bộ công cụ rà quét và gỡ bỏ phần mềm Windows chuyên sâu*
 
-[![CI](https://github.com/tsudev-tsudev/tsudev-cwico/actions/workflows/ci.yml/badge.svg)](https://github.com/tsudev-tsudev/tsudev-cwico/actions/workflows/ci.yml)
+Một sản phẩm của [tsudev](https://tsudev.com).
+
+[![CI](https://github.com/tsudev-org/tsudev-cwico/actions/workflows/ci.yml/badge.svg)](https://github.com/tsudev-org/tsudev-cwico/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2482bd)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-1.82%2B-ef6d18)](https://www.rust-lang.org)
 [![Safety rules](https://img.shields.io/badge/safety%20rules-58-2482bd)](data/safety-db.json)
@@ -52,6 +51,18 @@ Removal runs a four-step flow per item:
    not come back for the next user account.
 4. **Deep clean** - leftover folders and registry keys, each one validated
    against the deletion guard first.
+
+---
+
+## Product class
+
+**Class C - offline** under the tsudev account standard
+([`AUTH_AND_ACCOUNT.md`](.standards/docs/AUTH_AND_ACCOUNT.md) §1). Every
+function runs with no account and no server: there is no sign-in screen, and
+nothing is gated behind one. The only network request is the update check
+against GitHub Releases at startup - described under
+[Roadmap](#roadmap) - which sends no data about the machine and fails open
+when offline.
 
 ---
 
@@ -184,7 +195,7 @@ Before the first destructive step of any run:
 
 ### Use it
 
-Download the installer from [releases](https://github.com/tsudev-tsudev/tsudev-cwico/releases),
+Download the installer from [releases](https://github.com/tsudev-org/tsudev-cwico/releases),
 or:
 
 ```powershell
@@ -197,7 +208,7 @@ can be removed.
 ### Build it
 
 ```bash
-git clone https://github.com/tsudev-tsudev/tsudev-cwico
+git clone https://github.com/tsudev-org/tsudev-cwico
 cd tsudev-cwico
 
 # Engine tests - run on any host, no flags needed

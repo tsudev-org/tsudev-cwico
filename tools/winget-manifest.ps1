@@ -33,7 +33,7 @@
 param(
     [string]$BundleDir = "app/src-tauri/target/release/bundle",
     [string]$Tag = "",
-    [string]$Repository = "tsudev-tsudev/tsudev-cwico",
+    [string]$Repository = "tsudev-org/tsudev-cwico",
     [string]$OutFile = "winget-installer-manifest.yaml"
 )
 
