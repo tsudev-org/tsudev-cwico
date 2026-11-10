@@ -24,6 +24,15 @@ release-of-day counter:
 `tools/version.py` is the only thing that should ever compute a version;
 `tools/test_version.py` checks the mapping still sorts in release order.
 
+## Unreleased
+
+### Fixed
+
+- `cwico plan` now lists the run preamble - the System Restore point and the
+  registry backup taken before anything is removed. The plan was built as a
+  dry run, which drops the preamble, so the person reviewing it never saw the
+  two safety steps `remove --apply` performs first.
+
 ## tsudev-cwico-v26.11.10.2 - 2026-11-10
 
 > **Bản sửa lỗi quan trọng.** Ở bản 26.8.19, bấm *Quét hệ thống* trên máy
