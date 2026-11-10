@@ -153,7 +153,7 @@ jobs:
         run: >
           ./tools/winget-manifest.ps1
           -Repository "${{ github.repository }}"
-          -Version "${{ github.ref_name }}"
+          -Tag "${{ github.ref_name }}"
 
       # A release whose payload is unsigned is a release installed copies will
       # refuse, and the failure would only show up on a user's machine.
