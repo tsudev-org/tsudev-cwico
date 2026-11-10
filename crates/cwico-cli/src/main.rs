@@ -564,8 +564,12 @@ fn run() -> Result<ExitCode, String> {
                 return Ok(ExitCode::from(2));
             }
 
+            // `plan` never executes (it returns below, before `engine.execute`),
+            // so it is built exactly as `remove --apply` would build it. A dry-run
+            // build drops the preamble, which hid the restore point and the
+            // registry backup from the person reviewing the plan.
             let plan_options = PlanOptions {
-                dry_run: command == "plan" || !args.apply,
+                dry_run: command == "remove" && !args.apply,
                 create_restore_point: !args.no_restore_point,
                 require_restore_point: !args.no_restore_point,
                 backup_dir: Some(args.backup_dir.clone().unwrap_or_else(default_backup_dir)),
@@ -611,6 +615,12 @@ fn run() -> Result<ExitCode, String> {
                         plan.items.len(),
                         plan.total_steps()
                     );
+                    if !plan.preamble.is_empty() {
+                        println!("  RUN       before anything is removed");
+                        for step in &plan.preamble {
+                            println!("      - {}", step.slug());
+                        }
+                    }
                     for item in &plan.items {
                         println!("  {}  {}", safety_tag(item.safety), item.name);
                         for step in &item.steps {
