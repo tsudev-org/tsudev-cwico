@@ -18,6 +18,11 @@ jobs:
   build:
     name: Build installers
     runs-on: windows-latest
+    env:
+      # Windows runners default Python's file and console encoding to cp1252;
+      # CHANGELOG.md and the release notes carry Vietnamese. Without this the
+      # notes step dies on the first "ị" (tsudev-cwico-v26.11.10, 10/11/2026).
+      PYTHONUTF8: "1"
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
