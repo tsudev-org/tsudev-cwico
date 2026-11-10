@@ -105,6 +105,7 @@ Before publishing, confirm on the draft:
 
 - [ ] `latest.json` is attached - without it no update is ever delivered
 - [ ] The MSI and NSIS installers are attached and their sizes look sane
+- [ ] `tsudev-cwico_<semver>_x64-cli.exe` is attached, and `cli.exe info` runs
 - [ ] The release notes read the way you want them to, in a blocking dialog
 - [ ] **The signature verifies against the key this build carries:**
 

@@ -6,6 +6,7 @@ const ban = await banMoiNhat();
 const TEN_LOAI = {
   exe: { t: 'Bộ cài NSIS (.exe)', d: 'Khuyên dùng. Hỗ trợ tự cập nhật trong ứng dụng.' },
   msi: { t: 'Gói Windows Installer (.msi)', d: 'Cho triển khai hàng loạt qua Group Policy, Intune hoặc SCCM.' },
+  cli: { t: 'Bản dòng lệnh (.exe)', d: 'Một tệp, không cần cài. Xem trang Dòng lệnh.' },
 } as const;
 const exe = ban.goi.find((g) => g.loai === 'exe');
 const tenExe = exe?.ten ?? `tsudev-cwico_${ban.phienBan}_x64-setup.exe`;

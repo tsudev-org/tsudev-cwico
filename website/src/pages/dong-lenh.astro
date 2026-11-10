@@ -1,6 +1,8 @@
 ---
 import Trang from '../layouts/Trang.astro';
-import { REPO_URL } from '../lib/noi-dung';
+import { banMoiNhat, mb, REPO_URL } from '../lib/noi-dung';
+
+const cli = (await banMoiNhat()).goi.find((g) => g.loai === 'cli');
 
 const lenh = [
   { l: 'scan', d: 'Rà quét máy và phân loại mọi thứ tìm được. Chỉ đọc.' },
@@ -53,7 +55,24 @@ const co = [
       <div class="chu-y"><p><strong>Mọi lệnh chỉ chạy thử cho tới khi có <code>--apply</code>.</strong> Hãy bắt đầu bằng <code>cwico plan</code> - lệnh này không thay đổi gì trên máy.</p></div>
 
       <h2 id="cai-dat">Cài đặt</h2>
-      <p>Bản dòng lệnh hiện được build từ mã nguồn bằng <a href="https://rustup.rs/" target="_blank" rel="noopener noreferrer">Rust</a> (1.82 trở lên). Trên Windows:</p>
+      {cli ? (
+        <>
+          <p>Tải một tệp duy nhất, không cần cài đặt:</p>
+          <div class="goi">
+            <div class="goi__muc">
+              <div>
+                <h3>Bản dòng lệnh cho Windows (x64)</h3>
+                <p class="goi__ten">{cli.ten} · {mb(cli.kichThuoc)}</p>
+              </div>
+              <a class="nut nut--chinh" href={cli.url}>Tải về</a>
+              {cli.sha256 && <p class="goi__bam">SHA-256: {cli.sha256}</p>}
+            </div>
+          </div>
+          <p>Đổi tên thành <code>cwico.exe</code> nếu muốn gõ ngắn. Hoặc tự build từ mã nguồn bằng <a href="https://rustup.rs/" target="_blank" rel="noopener noreferrer">Rust</a> 1.82 trở lên:</p>
+        </>
+      ) : (
+        <p>Bản dòng lệnh hiện được build từ mã nguồn bằng <a href="https://rustup.rs/" target="_blank" rel="noopener noreferrer">Rust</a> (1.82 trở lên). Trên Windows:</p>
+      )}
       <pre tabindex="0"><code>cargo install --git {REPO_URL} cwico-cli</code></pre>
       <p>Chạy trong cửa sổ Terminal mở bằng quyền Administrator để kết quả quét đầy đủ.</p>
 

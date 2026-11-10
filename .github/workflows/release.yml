@@ -114,6 +114,28 @@ jobs:
       - name: Build the CLI
         run: cargo build -p cwico-cli --release
 
+      # The CLI and the desktop app are both called cwico.exe inside
+      # target/release, so the CLI is copied out under a release-style name
+      # before anything else can overwrite it. Users get it from the release
+      # page (and cwico.tsudev.com/dong-lenh/) instead of building from source.
+      - name: Name the CLI for release
+        id: cli
+        shell: bash
+        run: |
+          semver=$(python3 tools/version.py current | grep -oE '\(semver [^)]+\)' | sed 's/(semver //;s/)//')
+          name="tsudev-cwico_${semver}_x64-cli.exe"
+          mkdir -p dist-cli
+          cp target/release/cwico.exe "dist-cli/$name"
+          (cd dist-cli && sha256sum "$name")
+          echo "path=dist-cli/$name" >> "$GITHUB_OUTPUT"
+
+      - name: Attach the CLI to the draft release
+        if: startsWith(github.ref, 'refs/tags/') || inputs.publish
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.ref_name }}" "${{ steps.cli.outputs.path }}" --clobber
+
       - name: Record installer hashes
         shell: pwsh
         run: |
@@ -160,6 +182,6 @@ jobs:
             target/release/bundle/**/*.msi
             target/release/bundle/**/*.exe
             target/release/bundle/**/*.sig
-            target/release/cwico.exe
+            dist-cli/*.exe
             sha256sums.txt
             winget-installer-manifest.yaml

@@ -197,7 +197,7 @@ export function mucMd(tepMd: string, tieuDe: string): string {
 // Bản phát hành (GitHub Releases, đọc lúc build)
 // ---------------------------------------------------------------------------
 
-export interface GoiTai { loai: 'exe' | 'msi'; ten: string; url: string; sha256: string; kichThuoc: number }
+export interface GoiTai { loai: 'exe' | 'msi' | 'cli'; ten: string; url: string; sha256: string; kichThuoc: number }
 export interface BanPhatHanh { tag: string; phienBan: string; ngay: string; url: string; goi: GoiTai[] }
 
 let boNho: Promise<BanPhatHanh> | undefined;
@@ -221,13 +221,14 @@ export function banMoiNhat(): Promise<BanPhatHanh> {
     const goi = r.assets
       .filter((a) => /\.(exe|msi)$/.test(a.name))
       .map((a) => ({
-        loai: (a.name.endsWith('.exe') ? 'exe' : 'msi') as 'exe' | 'msi',
+        // Tệp CLI (`..._x64-cli.exe`, từ bản sau 26.8.1901) không phải bộ cài.
+        loai: (a.name.endsWith('-cli.exe') ? 'cli' : a.name.endsWith('.exe') ? 'exe' : 'msi') as GoiTai['loai'],
         ten: a.name,
         url: a.browser_download_url,
         sha256: a.digest?.startsWith('sha256:') ? a.digest.slice(7) : '',
         kichThuoc: a.size,
       }))
-      .sort((a, b) => a.loai.localeCompare(b.loai));
+      .sort((a, b) => ['exe', 'msi', 'cli'].indexOf(a.loai) - ['exe', 'msi', 'cli'].indexOf(b.loai));
     const [, y, m, d] = r.published_at.match(/^(\d{4})-(\d{2})-(\d{2})/) ?? [];
     return {
       tag: r.tag_name,
