@@ -4,7 +4,7 @@
 #   scripts/submit-winget.sh 26.11.1002
 #
 # Không clone kho winget-pkgs (rất lớn): tạo fork nếu chưa có, tạo nhánh từ đầu
-# master của upstream, đẩy ba tệp manifest qua API, rồi mở pull request.
+# master của upstream, đẩy mọi tệp manifest của phiên bản qua API, rồi mở pull request.
 # Cần `gh` đã đăng nhập bằng tài khoản sẽ đứng tên PR. Sau khi PR mở, ký CLA
 # của Microsoft nếu bot yêu cầu.
 set -euo pipefail
