@@ -5,7 +5,7 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **WINGET-2** Manifest 26.11.1002 đã nộp: [microsoft/winget-pkgs#476024](https://github.com/microsoft/winget-pkgs/pull/476024) (10/11/2026, fork `tsudev-tsudev/winget-pkgs`). Theo dõi kiểm định tự động và CLA; gộp xong thì `winget install tsudev.cwico` ra bản mới. Tag thừa `tsudev-cwico-v26.11.10` (không có bản phát hành) còn trên remote.
+- [ ] **WINGET-2** Manifest 26.11.1002 đã nộp: [microsoft/winget-pkgs#476024](https://github.com/microsoft/winget-pkgs/pull/476024) (10/11/2026, fork `tsudev-tsudev/winget-pkgs`). Theo dõi kiểm định tự động và CLA; gộp xong thì `winget install tsudev.cwico` ra bản mới.
 - [ ] **QA-WIN-1** Chạy thử phần GHI trên Windows thật, có quyền Admin: `cwico plan --safe-only` (không đổi gì), rồi gỡ một mục An toàn trên máy ảo có snapshot - kiểm điểm khôi phục, `.reg`, nhật ký giao dịch. Chưa phiên bản nào làm việc này.
 - [ ] **QU-STD-1 (phần còn lại)** Màu đã lấy từ `.standards/tokens/` (PR #42). Còn: chế độ Warm (UI chỉ có sáng/tối) và màu nút chính `--color-tsu-600` -> `primary`; cùng chờ TS-8.
 - [ ] **QU-STD-BRAND (phần còn lại)** Màu chữ "dev" ở `ui/src/components/Brand.tsx` (cam, 4,18:1 - hai lỗi axe duy nhất còn lại) lệch website (xanh) - chờ TS-8 ở `tsudev-standards`, chưa tự đổi. Ảnh đại diện tổ chức GitHub là việc cấp tổ chức `tsudev-org`.
