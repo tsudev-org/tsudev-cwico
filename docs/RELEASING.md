@@ -134,6 +134,9 @@ ProductCode. Copy it over
 `packaging/winget/manifests/t/tsudev/cwico/<version>/tsudev.cwico.installer.yaml`,
 update the other two manifests in that directory, and open a pull request
 against [`microsoft/winget-pkgs`](https://github.com/microsoft/winget-pkgs).
+`python3 tools/apply_winget_manifest.py <artefact>/winget-installer-manifest.yaml`
+does the first part; `scripts/submit-winget.sh <semver>` forks (if needed),
+pushes the three files and opens the pull request without cloning winget-pkgs.
 
 ---
 
