@@ -67,7 +67,7 @@ mạng thì phần mềm vẫn chạy bình thường.
 
 <div align="center">
 
-<img src="screenshots/scan-light-vi.png" alt="Danh sách phần mềm kèm mức an toàn và lý do" width="820">
+<img src="screenshots/scan-light-vi.png" alt="Kết quả quét thật một máy Windows 11: 631 mục, mỗi mục có mức an toàn và lý do, phân trang 10 mục" width="820">
 
 *Mỗi dòng đều hiện mức phân loại và **lý do**. Người dùng đang cân nhắc gỡ
 Microsoft Edge không phải rê chuột mới biết Windows dùng nó để xem trước PDF.*
@@ -112,9 +112,12 @@ dùng cùng lúc.*
 
 *Mức bảo vệ thực sự đang được nạp, và nơi lưu các bản sao lưu để khôi phục.*
 
-<sub>Ảnh render từ fixture backend (`MockBackend` của `cwico-core`), không phải
-kết quả quét máy thật - đây cũng là cách giao diện được phát triển và kiểm tra
-mà không cần máy Windows.</sub>
+<img src="screenshots/scan-dark-vi.png" alt="Cùng kết quả quét thật ở giao diện tối" width="820">
+
+<sub>Màn hình danh sách phần mềm và tinh chỉnh chụp từ ứng dụng thật trên
+Windows 11 Pro 25H2 (10/11/2026, không quyền quản trị, tìm thấy 631 mục). Các
+màn kế hoạch, xác nhận, cập nhật và giới thiệu render từ fixture backend
+(`MockBackend` của `cwico-core`) - chụp thật cần một lượt gỡ và quyền quản trị.</sub>
 
 </div>
 
