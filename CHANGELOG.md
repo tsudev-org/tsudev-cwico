@@ -26,6 +26,13 @@ release-of-day counter:
 
 ## Unreleased
 
+### Added
+
+- Website `cwico.tsudev.com`: theme button in the header - Light, Warm, Dark or
+  Follow system, same as tsudev.com (stored under `tsudev-theme`). Applied by a
+  synchronous `/js/theme.js` in `<head>` before the stylesheet, so pages never
+  flash the wrong colours; the strict CSP (`script-src 'self'`) is unchanged.
+
 ### Fixed
 
 - `cwico plan` now lists the run preamble - the System Restore point and the

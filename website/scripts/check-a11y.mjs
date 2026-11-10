@@ -1,5 +1,7 @@
 // Kiểm tra khả năng truy cập (ACCESSIBILITY.md của tsudev) bằng axe-core: mọi trang trong dist/,
-// cả chế độ sáng và tối (prefers-color-scheme), quy tắc WCAG 2.0/2.1/2.2 mức A và AA.
+// mọi chế độ giao diện (Theo hệ thống ở hệ điều hành sáng và tối, Sáng, Ấm, Tối - khóa tsudev-theme của /js/theme.js)
+// và một lượt giả lập tắt JavaScript (chặn /js/theme.js - tắt JS thật thì axe không chạy được); quy tắc WCAG 2.0/2.1/2.2 mức A và AA. Mỗi lượt có JS còn kiểm data-theme đúng chế độ
+// và không có lỗi console (vd. CSP chặn script).
 // Chạy sau `npm run build`: `npm run check:a11y` (CI: website.yml). Cần Chromium của Playwright:
 // `npx playwright install --with-deps chromium`.
 import { createServer } from 'node:http';
@@ -51,11 +53,30 @@ const browser = await chromium.launch();
 const tags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 let total = 0;
 const list = pages(dist);
-for (const scheme of ['light', 'dark']) {
-  const context = await browser.newContext({ colorScheme: scheme });
+const CHE_DO = [
+  { ten: 'system/light', scheme: 'light', luu: null, mongDoi: 'light' },
+  { ten: 'system/dark', scheme: 'dark', luu: null, mongDoi: 'dark' },
+  { ten: 'light', scheme: 'dark', luu: 'light', mongDoi: 'light' },
+  { ten: 'warm', scheme: 'light', luu: 'warm', mongDoi: 'warm' },
+  { ten: 'dark', scheme: 'light', luu: 'dark', mongDoi: 'dark' },
+  { ten: 'khong-js/dark', scheme: 'dark', luu: null, mongDoi: 'light', tatJs: true },
+];
+for (const { ten: scheme, scheme: colorScheme, luu, mongDoi, tatJs } of CHE_DO) {
+  const context = await browser.newContext({ colorScheme });
+  if (tatJs) await context.route('**/js/theme.js', (r) => r.abort());
+  if (luu) await context.addInitScript((v) => { try { localStorage.setItem('tsudev-theme', v); } catch { /* */ } }, luu);
   for (const path of list) {
     const page = await context.newPage();
+    const loiConsole = [];
+    page.on('console', (m) => { if (m.type() === 'error') loiConsole.push(m.text()); });
+    page.on('pageerror', (e) => loiConsole.push(String(e)));
     await page.goto(base + path, { waitUntil: 'load' });
+    {
+      const thucTe = await page.evaluate(() => document.documentElement.dataset.theme);
+      if (thucTe !== mongDoi) { total++; console.error(`[a11y] LỖI ${scheme} ${path}: data-theme=${thucTe}, cần ${mongDoi}`); }
+      for (const l of loiConsole.filter((x) => !(tatJs && /theme\.js|ERR_FAILED/.test(x)))) { total++; console.error(`[a11y] LỖI ${scheme} ${path}: console: ${l}`); }
+    }
+    process.stdout.write('.');
     const { violations } = await new AxeBuilder({ page }).withTags(tags).analyze();
     for (const v of violations) {
       total++;
@@ -68,5 +89,5 @@ for (const scheme of ['light', 'dark']) {
 }
 await browser.close();
 server.close();
-console.log(`[a11y] ${list.length} trang x 2 chế độ màu, ${total} lỗi`);
+console.log(`[a11y] ${list.length} trang x ${CHE_DO.length} chế độ màu, ${total} lỗi`);
 process.exit(total ? 1 : 0);

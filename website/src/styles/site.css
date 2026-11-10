@@ -1,7 +1,9 @@
 /* Giao diện cwico.tsudev.com - dùng token tsudev (tokens.css, sao nguyên văn từ tsudev-standards).
-   Không có JavaScript nên chế độ tối đi theo hệ điều hành: ánh xạ giá trị token "dark" vào [data-theme="light"]. */
+   Chế độ do /js/theme.js chọn và ghi vào <html data-theme> kèm data-che-do; "Theo hệ thống" giải bằng JavaScript.
+   Khối dưới CHỈ cho trường hợp tắt JavaScript (không có data-che-do): đi theo hệ điều hành bằng cách ánh xạ
+   giá trị token "dark" vào [data-theme="light"]. */
 @media (prefers-color-scheme: dark) {
-  [data-theme="light"] {
+  [data-theme="light"]:not([data-che-do]) {
     --bg-base: #0F1B2D;
     --bg-surface: #16263C;
     --bg-subtle: #1C2F4A;
@@ -79,6 +81,42 @@ pre {
 .menu a { display: block; padding: 0.45rem 0.8rem; border-radius: 8px; color: var(--text-secondary); text-decoration: none; font-weight: 600; }
 .menu a:hover { background: var(--bg-hover); color: var(--text-primary); }
 .menu a[aria-current="page"] { color: var(--text-link); background: var(--bg-subtle); }
+
+/* Nút đổi giao diện (hiện khi có JavaScript): cuối đầu trang; màn hẹp thì lên cùng dòng logo, menu xuống dòng dưới */
+.dau-trang__trong nav { margin-left: auto; }
+.giao-dien { position: relative; }
+@media (max-width: 56rem) {
+  .giao-dien { order: 1; margin-left: auto; }
+  .dau-trang__trong nav { order: 2; flex-basis: 100%; margin-left: 0; }
+}
+.giao-dien[hidden] { display: none; }
+.giao-dien__nut {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.5rem; height: 2.5rem; padding: 0; border-radius: 8px; cursor: pointer;
+  background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-control);
+}
+.giao-dien__nut:hover { background: var(--bg-hover); }
+.giao-dien__bieu-tuong { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.giao-dien__bieu-tuong--trang { display: none; }
+[data-theme="dark"] .giao-dien__bieu-tuong--troi { display: none; }
+[data-theme="dark"] .giao-dien__bieu-tuong--trang { display: block; }
+.giao-dien__menu {
+  position: absolute; right: 0; top: calc(100% + 0.4rem); z-index: 6; min-width: 11rem;
+  list-style: none; margin: 0; padding: 0.35rem;
+  background: var(--bg-surface); border: 1px solid var(--border-strong); border-radius: 10px;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--text-primary) 18%, transparent);
+}
+.giao-dien__menu[hidden] { display: none; }
+.giao-dien__menu button {
+  display: flex; align-items: center; gap: 0.5rem; width: 100%; padding: 0.5rem 0.7rem;
+  border: 0; border-radius: 6px; background: none; color: var(--text-primary);
+  font: inherit; font-weight: 600; text-align: left; cursor: pointer;
+}
+.giao-dien__menu button::before { content: ""; width: 1rem; flex: none; }
+.giao-dien__menu button[aria-checked="true"] { color: var(--text-link); background: var(--bg-subtle); }
+.giao-dien__menu button[aria-checked="true"]::before { content: "\2713"; }
+.giao-dien__menu button:hover { background: var(--bg-hover); }
+.giao-dien__nut:focus-visible, .giao-dien__menu button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* Nút */
 .nut {

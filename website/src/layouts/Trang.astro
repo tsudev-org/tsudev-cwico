@@ -25,6 +25,13 @@ const menu = [
   { href: '/nhat-ky/', ten: 'Nhật ký' },
 ];
 const dangO = (href: string) => duongDan.startsWith(href);
+// Bốn lựa chọn giao diện, cùng bộ với tsudev.com (ThemeToggle). /js/theme.js nối hành vi.
+const giaoDien = [
+  { chon: 'light', ten: 'Sáng' },
+  { chon: 'warm', ten: 'Ấm' },
+  { chon: 'dark', ten: 'Tối' },
+  { chon: 'system', ten: 'Theo hệ thống' },
+];
 const ld = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
@@ -49,6 +56,8 @@ const ld = {
     <meta name="theme-color" content="#EEF4FB" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0F1B2D" media="(prefers-color-scheme: dark)">
     <meta name="color-scheme" content="light dark">
+    <!-- Chống nháy màu: áp chế độ đã lưu TRƯỚC stylesheet, SAU các meta theme-color/color-scheme (script sửa chúng). Đồng bộ (không defer/async), tệp ngoài vì CSP script-src 'self'. -->
+    <script is:inline src="/js/theme.js"></script>
     <link rel="canonical" href={url}>
     <meta property="og:site_name" content="tsudev">
     <meta property="og:type" content="website">
@@ -82,6 +91,23 @@ const ld = {
             ))}
           </ul>
         </nav>
+        <div class="giao-dien" hidden>
+          <button type="button" id="nut-giao-dien" class="giao-dien__nut" aria-label="Đổi giao diện"
+            aria-haspopup="menu" aria-expanded="false" aria-controls="menu-giao-dien">
+            <svg class="giao-dien__bieu-tuong giao-dien__bieu-tuong--troi" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="4.5" />
+              <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" />
+            </svg>
+            <svg class="giao-dien__bieu-tuong giao-dien__bieu-tuong--trang" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z" />
+            </svg>
+          </button>
+          <ul id="menu-giao-dien" class="giao-dien__menu" role="menu" aria-label="Giao diện" hidden>
+            {giaoDien.map((g) => (
+              <li role="none"><button type="button" role="menuitemradio" aria-checked="false" data-chon={g.chon} tabindex="-1">{g.ten}</button></li>
+            ))}
+          </ul>
+        </div>
       </div>
     </header>
     <main id="noi-dung">
