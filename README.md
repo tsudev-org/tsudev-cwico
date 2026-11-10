@@ -70,7 +70,7 @@ when offline.
 
 <div align="center">
 
-<img src="docs/screenshots/scan-light-vi.png" alt="The inventory, showing each item's safety class and the reason for it" width="820">
+<img src="docs/screenshots/scan-light-vi.png" alt="A live scan of a Windows 11 machine: 631 items, each with its safety class and the reason for it, paged ten at a time" width="820">
 
 *Every row carries its classification and **why**. A user deciding about
 Microsoft Edge should not have to hover to learn that Windows renders PDF
@@ -115,9 +115,13 @@ the app start normally: an outage must not lock everyone out at once.*
 
 *How much protection is actually loaded, and where your rollback artefacts go.*
 
-<sub>Rendered from the fixture backend (`cwico-core`'s `MockBackend`), not a
-live scan - which is also how the interface is developed and reviewed without a
-Windows machine in the loop.</sub>
+<img src="docs/screenshots/scan-dark-vi.png" alt="The same live scan in the dark theme" width="820">
+
+<sub>The inventory and tweaks screens are captured from the real app on
+Windows 11 Pro 25H2 (10/11/2026, unelevated, 631 items found). The plan,
+confirmation, update and about screens are rendered from the fixture backend
+(`cwico-core`'s `MockBackend`) - capturing them live needs a removal run and an
+Administrator session.</sub>
 
 </div>
 
