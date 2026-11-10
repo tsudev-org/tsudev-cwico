@@ -7,6 +7,27 @@
 
   const MIN_QUERY_LENGTH = 2;
   const DEBOUNCE_MS = 350;
+  // DATA_TABLE.md: mốc 10/20/50/100/200, mặc định 10, góc dưới bên trái, nhớ theo từng bảng.
+  const PAGE_SIZES = [10, 20, 50, 100, 200];
+  const nf = new Intl.NumberFormat('vi-VN');
+
+  function docMoc(bang, url) {
+    const tuUrl = Number(url.searchParams.get('page_size'));
+    if (PAGE_SIZES.includes(tuUrl)) return tuUrl;
+    try {
+      const nho = Number(localStorage.getItem(`tsudev.pagesize.${bang}`));
+      if (PAGE_SIZES.includes(nho)) return nho;
+    } catch { /* bộ nhớ bị chặn */ }
+    return 10;
+  }
+
+  /** Tối đa 7 ô: 1 … 5 6 7 … 13 (null = dấu lửng). */
+  function oTrang(hienTai, tong) {
+    if (tong <= 7) return Array.from({ length: tong }, (_, i) => i + 1);
+    if (hienTai <= 4) return [1, 2, 3, 4, 5, null, tong];
+    if (hienTai >= tong - 3) return [1, null, tong - 4, tong - 3, tong - 2, tong - 1, tong];
+    return [1, null, hienTai - 1, hienTai, hienTai + 1, null, tong];
+  }
 
   /** Chuẩn hóa một chuỗi: NFC, chữ thường, bỏ dấu, đ -> d, gộp khoảng trắng. */
   function chuanHoa(s) {
@@ -82,21 +103,44 @@
       if (r) r.checked = true;
     }
 
-    function apDung() {
+    // Chân vùng bản ghi: bộ chọn TRÁI - tóm tắt GIỮA - phân trang PHẢI.
+    let moc = docMoc(ten, url);
+    let trang = Math.max(1, Number(url.searchParams.get('page')) || 1);
+    const chan = document.createElement('div');
+    chan.className = 'chan-ds';
+    chan.innerHTML = `<div class="chan-ds__moc"><select aria-label="Số bản ghi mỗi trang"></select><span aria-hidden="true">/ trang</span></div>
+      <p class="chan-ds__tom-tat"></p><span class="chi-doc" aria-live="polite"></span>
+      <nav class="chan-ds__trang" aria-label="Phân trang"></nav>`;
+    const chonMoc = chan.querySelector('select');
+    for (const m of PAGE_SIZES) chonMoc.add(new Option(String(m), String(m), m === moc, m === moc));
+    ds.after(chan);
+    let dauTien = 0;
+    chonMoc.addEventListener('change', () => {
+      moc = Number(chonMoc.value);
+      try { localStorage.setItem(`tsudev.pagesize.${ten}`, String(moc)); } catch { /* bỏ qua */ }
+      trang = Math.floor(dauTien / moc) + 1; // giữ bản ghi đầu đang xem
+      apDung(false);
+      chonMoc.focus();
+    });
+
+    function apDung(veTrangDau = true) {
+      if (veTrangDau === true) trang = 1;
       const q = chuanHoa(o.value);
       const tu = q.length >= MIN_QUERY_LENGTH ? q.split(' ').filter(Boolean) : [];
       const chon = Object.fromEntries(nhom.map((n) => [n, form.querySelector(`input[name="${n}"]:checked`)?.value ?? '']));
-      let hien = 0;
+      const khopDs = muc.filter((li) => tu.every((t) => li.dataset.tim.includes(t))
+        && nhom.every((n) => !chon[n] || li.dataset[n] === chon[n]));
+      const hien = khopDs.length;
+      const soTrang = Math.max(1, Math.ceil(hien / moc));
+      trang = Math.min(Math.max(1, trang), soTrang);
+      dauTien = (trang - 1) * moc;
+      const trenTrang = new Set(khopDs.slice(dauTien, dauTien + moc));
       for (const li of muc) {
-        const khop = tu.every((t) => li.dataset.tim.includes(t))
-          && nhom.every((n) => !chon[n] || li.dataset[n] === chon[n]);
-        li.hidden = !khop;
-        if (khop) {
-          hien += 1;
-          for (const el of li.querySelectorAll('[data-hl]')) toSang(el, tu);
-        }
+        li.hidden = !trenTrang.has(li);
+        if (trenTrang.has(li)) for (const el of li.querySelectorAll('[data-hl]')) toSang(el, tu);
       }
       kq.textContent = hien === tong ? `${tong} mục` : `${hien} / ${tong} mục`;
+      veChan(hien, soTrang);
       if (rong) {
         rong.hidden = hien > 0;
         if (!hien) {
@@ -109,7 +153,39 @@
       moi.searchParams.delete('q');
       if (tu.length) moi.searchParams.set('q', o.value.trim());
       for (const n of nhom) { moi.searchParams.delete(n); if (chon[n]) moi.searchParams.set(n, chon[n]); }
+      moi.searchParams.delete('page'); moi.searchParams.delete('page_size');
+      if (trang > 1) moi.searchParams.set('page', String(trang));
+      if (moc !== 10) moi.searchParams.set('page_size', String(moc));
       history.replaceState(null, '', moi);
+    }
+
+    function veChan(hien, soTrang) {
+      const cuoi = Math.min(dauTien + moc, hien);
+      let tt = '';
+      if (hien && soTrang === 1) tt = `${nf.format(hien)} mục`;
+      else if (hien) tt = `${nf.format(dauTien + 1)}-${nf.format(cuoi)} / ${nf.format(hien)}`;
+      if (hien && hien !== tong) tt += ` (lọc từ ${nf.format(tong)})`;
+      chan.querySelector('.chan-ds__tom-tat').textContent = tt;
+      chan.querySelector('.chi-doc').textContent = hien
+        ? `Đang hiển thị ${nf.format(dauTien + 1)} đến ${nf.format(cuoi)} trong ${nf.format(hien)} mục` : '';
+      const nav = chan.querySelector('nav');
+      nav.textContent = '';
+      nav.hidden = soTrang <= 1;
+      const nut = (nhan, toi, aria, hienTai) => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'o-trang'; b.textContent = nhan;
+        if (aria) b.setAttribute('aria-label', aria);
+        if (hienTai) b.setAttribute('aria-current', 'page');
+        b.disabled = toi < 1 || toi > soTrang;
+        b.addEventListener('click', () => { trang = toi; apDung(false); ds.scrollIntoView({ block: 'start' }); });
+        nav.append(b);
+      };
+      nut('‹', trang - 1, 'Trang trước');
+      for (const n of oTrang(trang, soTrang)) {
+        if (n === null) { const g = document.createElement('span'); g.textContent = '…'; g.className = 'o-trang__lung'; nav.append(g); }
+        else nut(nf.format(n), n, null, n === trang);
+      }
+      nut('›', trang + 1, 'Trang sau');
     }
 
     let hen;
@@ -130,10 +206,12 @@
     });
 
     form.hidden = false;
-    apDung();
+    apDung(false);
     // Liên kết tới một mục cụ thể (#ms.onedrive): mở chi tiết kỹ thuật của mục đó.
     const dich = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
     if (dich && ds.contains(dich)) {
+      const viTri = muc.indexOf(dich);
+      if (viTri >= 0 && dich.hidden) { trang = Math.floor(viTri / moc) + 1; apDung(false); }
       dich.hidden = false;
       dich.querySelector('details')?.setAttribute('open', '');
     }
