@@ -83,6 +83,8 @@ release-of-day counter:
   escaped em-dashes; copyright reads `Copyright (c) 2026 tsudev`.
 - The release build passed `-Version` to the winget manifest generator, which
   takes `-Tag`; every release run would have failed at that step.
+- The release build read `CHANGELOG.md` as cp1252 on the Windows runner and
+  died on Vietnamese text; the job now runs Python in UTF-8 mode.
 
 ## tsudev-cwico-v26.8.19 - 2026-08-19
 

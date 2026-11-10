@@ -28,7 +28,7 @@ spec.loader.exec_module(version)
 
 def section_for(release: str) -> str:
     """The body of `## <release> - ...`, up to the next `##` heading."""
-    text = CHANGELOG.read_text()
+    text = CHANGELOG.read_text(encoding="utf-8")
     pattern = re.compile(
         rf"^##\s+{re.escape(release)}\b.*?$(.*?)(?=^##\s|\Z)",
         re.MULTILINE | re.DOTALL,
@@ -53,6 +53,8 @@ def main(argv: list[str]) -> int:
         release = version.to_name(version.read_cargo())
     # Accept a bare tag, a full name, or a semver.
     release = version.to_name(version.to_semver(release))
+    # The notes are bilingual; never let the console's code page decide.
+    sys.stdout.reconfigure(encoding="utf-8")
     print(section_for(release))
     return 0
 
