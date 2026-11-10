@@ -223,6 +223,19 @@ pre {
 .muc-dm__ky-thuat dt { color: var(--text-muted); }
 .muc-dm__ky-thuat dd { margin: 0; display: flex; flex-wrap: wrap; gap: 0.3rem; min-width: 0; }
 .muc-dm__ky-thuat dd ul { margin: 0; padding-left: 1.1rem; }
+/* Chân vùng bản ghi (DATA_TABLE.md mục 3): bộ chọn trái - tóm tắt giữa - trang phải */
+.chan-ds { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; margin-top: 0.75rem; padding: 0.5rem 1rem; min-height: 3rem; background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 14px; }
+.chan-ds__moc { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--text-muted); }
+.chan-ds__moc select { height: 2rem; font: inherit; font-size: 0.88rem; color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-control); border-radius: 6px; padding: 0 0.4rem; }
+.chan-ds__tom-tat { flex: 1; margin: 0; text-align: center; font-size: 0.82rem; color: var(--text-muted); }
+.chan-ds__trang { display: flex; gap: 0.25rem; align-items: center; }
+.chan-ds__trang[hidden] { display: none; }
+.o-trang { min-width: 2rem; height: 2rem; padding: 0 0.5rem; font: inherit; font-size: 0.85rem; border: 1px solid var(--border-control); border-radius: 6px; background: var(--bg-surface); color: var(--text-primary); cursor: pointer; }
+.o-trang[aria-current="page"] { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.o-trang:disabled { opacity: 0.45; cursor: not-allowed; }
+.o-trang__lung { color: var(--text-muted); padding: 0 0.15rem; }
+.chi-doc { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 640px) { .chan-ds__tom-tat { text-align: right; } .chan-ds__trang { width: 100%; justify-content: space-between; } }
 mark { background: color-mix(in srgb, var(--warning) 25%, var(--bg-surface)); color: inherit; border-radius: 3px; padding: 0 0.05em; }
 
 .ghi-chu-nguon { color: var(--text-muted); font-size: 0.92rem; }

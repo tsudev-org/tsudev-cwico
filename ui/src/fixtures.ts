@@ -284,7 +284,7 @@ export function about(): AboutInfo {
       elevated: false,
       systemRestoreAvailable: false,
     },
-    safetyDbVersion: "1.0.1",
+    safetyDbVersion: "1.0.2",
     safetyDbUpdated: "2026-08-19",
     safetyRules: 58,
     safeRules: 29,
@@ -333,7 +333,7 @@ export async function scan(options?: ScanOptions): Promise<ScanReport> {
       reclaimableBytes: ITEMS.reduce((sum, i) => sum + (i.sizeBytes ?? 0), 0),
       durationMs: 1100,
     },
-    safetyDbVersion: "1.0.1",
+    safetyDbVersion: "1.0.2",
     elevated: false,
   };
 }
