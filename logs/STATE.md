@@ -5,7 +5,7 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **REL-1 (bước cuối)** Bản nháp `tsudev-cwico-v26.11.10.2` đã build, ký, kiểm đủ RELEASING.md mục 5 (chữ ký khớp, có `latest.json` + MSI + NSIS + CLI, app giải nén quét được 631 mục trên Windows 11). Chỉ còn **công bố**: `gh release edit tsudev-cwico-v26.11.10.2 --draft=false --latest` - phiên 05 bị chặn ở bước này. Sau khi công bố: `cd website && npm run deploy`; rồi winget (RELEASING mục 7). Tag `tsudev-cwico-v26.11.10` không có bản phát hành (build hỏng ở bước ghi chú, đã sửa #48); phiên 05 bị chặn xóa tag trên remote - để nguyên hoặc chủ dự án xóa.
+- [ ] **WINGET-2** Nộp manifest 26.11.1002 (đã có ở `packaging/winget/.../26.11.1002/`): chạy `scripts/submit-winget.sh 26.11.1002` - phiên 05 bị chặn tạo fork/PR ở kho của Microsoft. Fork cũ `tsudev-tsudev/winget-pkgs` đã bị xóa. Tag thừa `tsudev-cwico-v26.11.10` (không có bản phát hành) còn trên remote.
 - [ ] **QA-WIN-1** Chạy thử phần GHI trên Windows thật, có quyền Admin: `cwico plan --safe-only` (không đổi gì), rồi gỡ một mục An toàn trên máy ảo có snapshot - kiểm điểm khôi phục, `.reg`, nhật ký giao dịch. Chưa phiên bản nào làm việc này.
 - [ ] **QU-STD-1 (phần còn lại)** Màu đã lấy từ `.standards/tokens/` (PR #42). Còn: chế độ Warm (UI chỉ có sáng/tối) và màu nút chính `--color-tsu-600` -> `primary`; cùng chờ TS-8.
 - [ ] **QU-STD-BRAND (phần còn lại)** Màu chữ "dev" ở `ui/src/components/Brand.tsx` (cam, 4,18:1 - hai lỗi axe duy nhất còn lại) lệch website (xanh) - chờ TS-8 ở `tsudev-standards`, chưa tự đổi. Ảnh đại diện tổ chức GitHub là việc cấp tổ chức `tsudev-org`.
@@ -18,6 +18,7 @@
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 10/11/2026 - **Phát hành `tsudev-cwico-v26.11.10.2`** (chủ dự án công bố). Kiểm đầu cuối trên máy thật: bản 26.8.19 đã cài hiện màn cập nhật bắt buộc, bấm Cập nhật -> tải, kiểm chữ ký, cài, khởi động lại thành 26.11.1002. Website triển khai lại; manifest winget 26.11.1002 (#51).
 - 10/11/2026 - Phiên 05 (tiếp): CLI vào tài sản phát hành (REL-2, #45); sửa quy trình phát hành gọi sai `-Version` (#45) và đọc CHANGELOG bằng cp1252 (#48); phân trang danh mục website (WEB-1, #46); CSDL an toàn 1.0.2 thêm tên cho 17 quy tắc (#46); ảnh chụp app thật vào README (#47); bản nháp `tsudev-cwico-v26.11.10.2` (#49).
 - 10/11/2026 - Phiên 05: website `https://cwico.tsudev.com` (PR #37, Workers Static Assets); chạy thật trên Windows 11 lần đầu, sửa UI trắng cửa sổ + hợp đồng IPC (PR #38); phân trang mọi danh sách (QU-STD-TABLE, PR #40); ảnh bản cài + cổng CI tài sản (PR #41); token chuẩn + border-control (QU-STD-3, phần lớn QU-STD-1, PR #42). Chi tiết: `logs/handover/20261110-01_ket-phien-05.md`.
 - 09/11/2026 - Phiếu 20261109-01: README mở đầu theo `ECOSYSTEM_IDENTITY.md` mục 2.1, ghi hạng C; mọi URL repo trỏ `tsudev-org/tsudev-cwico` (giữ nguyên manifest winget 26.8.1901 đã phát hành và nhật ký phiên cũ).
