@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.1",
-  "updated": "2026-08-19",
+  "version": "1.0.2",
+  "updated": "2026-11-10",
   "sourceNotes": [
     "Classification reflects Windows 10 22H2 and Windows 11 23H2/24H2 behaviour.",
     "critical = removal breaks boot, logon, security or the shell. The engine hard-blocks these; the UI cannot override.",
@@ -82,6 +82,10 @@
           "skypeapp",
           "skype for desktop"
         ]
+      },
+      "label": {
+        "en": "Skype",
+        "vi": "Skype"
       },
       "reason": {
         "en": "Consumer chat client. No operating-system component depends on it.",
@@ -169,6 +173,10 @@
           "^microsoft\\.xboxidentityprovider"
         ]
       },
+      "label": {
+        "en": "Xbox Identity Provider",
+        "vi": "Xbox Identity Provider (đăng nhập Xbox)"
+      },
       "reason": {
         "en": "Handles Xbox Live sign-in. PC games bought from the Microsoft Store or using Xbox Live accounts will fail to authenticate without it.",
         "vi": "Xử lý đăng nhập Xbox Live. Các game PC mua từ Microsoft Store hoặc dùng tài khoản Xbox Live sẽ không đăng nhập được nếu gỡ."
@@ -215,6 +223,10 @@
           "solitairecollection",
           "microsoft solitaire"
         ]
+      },
+      "label": {
+        "en": "Microsoft Solitaire Collection",
+        "vi": "Microsoft Solitaire Collection"
       },
       "reason": {
         "en": "Bundled game with advertising. No system dependency.",
@@ -278,6 +290,10 @@
         "regex": [
           "^microsoft\\.yourphone"
         ]
+      },
+      "label": {
+        "en": "Phone Link",
+        "vi": "Liên kết Điện thoại (Phone Link)"
       },
       "reason": {
         "en": "Android/iPhone companion. Nothing else uses it.",
@@ -369,6 +385,10 @@
           "^microsoft\\.people$"
         ]
       },
+      "label": {
+        "en": "Microsoft People",
+        "vi": "Danh bạ (Microsoft People)"
+      },
       "reason": {
         "en": "Contacts app for the Mail client. Removing it does not affect Outlook or third-party mail.",
         "vi": "Ứng dụng danh bạ cho Mail. Gỡ không ảnh hưởng Outlook hay ứng dụng mail bên thứ ba."
@@ -385,6 +405,10 @@
           "windowsfeedbackhub",
           "feedback hub"
         ]
+      },
+      "label": {
+        "en": "Feedback Hub",
+        "vi": "Trung tâm Phản hồi (Feedback Hub)"
       },
       "reason": {
         "en": "Sends diagnostic feedback to Microsoft. Purely optional.",
@@ -432,6 +456,10 @@
           "^microsoft\\.windowsmaps"
         ]
       },
+      "label": {
+        "en": "Windows Maps",
+        "vi": "Bản đồ Windows"
+      },
       "reason": {
         "en": "Offline maps app, retired by Microsoft in 2025.",
         "vi": "Ứng dụng bản đồ ngoại tuyến, Microsoft đã khai tử năm 2025."
@@ -477,6 +505,10 @@
           "microsoft to do"
         ]
       },
+      "label": {
+        "en": "Microsoft To Do",
+        "vi": "Microsoft To Do"
+      },
       "reason": {
         "en": "Task list app. Data lives in the cloud and survives removal.",
         "vi": "Ứng dụng danh sách việc cần làm. Dữ liệu nằm trên đám mây và không mất khi gỡ."
@@ -493,6 +525,10 @@
           "powerautomatedesktop",
           "power automate"
         ]
+      },
+      "label": {
+        "en": "Power Automate",
+        "vi": "Power Automate"
       },
       "reason": {
         "en": "RPA authoring tool preinstalled on Windows 11. Optional.",
@@ -536,6 +572,10 @@
         "contains": [
           "clipchamp"
         ]
+      },
+      "label": {
+        "en": "Clipchamp",
+        "vi": "Clipchamp"
       },
       "reason": {
         "en": "Video editor added to Windows 11 images. Optional.",
@@ -602,6 +642,10 @@
           "microsoft.whiteboard"
         ]
       },
+      "label": {
+        "en": "Microsoft Whiteboard",
+        "vi": "Microsoft Whiteboard"
+      },
       "reason": {
         "en": "Collaborative whiteboard app. Optional.",
         "vi": "Ứng dụng bảng trắng cộng tác. Tùy chọn."
@@ -665,6 +709,10 @@
           "bingchat"
         ]
       },
+      "label": {
+        "en": "Copilot",
+        "vi": "Copilot"
+      },
       "reason": {
         "en": "AI assistant panel. No operating-system feature depends on it.",
         "vi": "Bảng trợ lý AI. Không có tính năng hệ điều hành nào phụ thuộc vào nó."
@@ -682,6 +730,10 @@
           "cortana",
           "microsoft.549981c3f5f10"
         ]
+      },
+      "label": {
+        "en": "Cortana",
+        "vi": "Cortana"
       },
       "reason": {
         "en": "Voice assistant. Removing it also removes voice activation; Windows Search itself keeps working.",
@@ -866,6 +918,10 @@
           "^microsoft\\.windowscamera"
         ]
       },
+      "label": {
+        "en": "Windows Camera",
+        "vi": "Máy ảnh Windows"
+      },
       "reason": {
         "en": "Default camera app. Removing it leaves other apps able to use the webcam, but Windows Hello enrolment and the 'Take a photo' shell action stop working.",
         "vi": "Ứng dụng camera mặc định. Gỡ xong các app khác vẫn dùng được webcam, nhưng đăng ký Windows Hello và chức năng 'Chụp ảnh' trong shell sẽ ngừng hoạt động."
@@ -890,6 +946,10 @@
           "^microsoft\\.microsoftedge(\\.stable)?$"
         ]
       },
+      "label": {
+        "en": "Microsoft Edge",
+        "vi": "Microsoft Edge"
+      },
       "reason": {
         "en": "Windows uses Edge to render help pages, PDF previews, sign-in prompts and some Settings panes. Removing it can break those flows and Windows Update may reinstall it.",
         "vi": "Windows dùng Edge để hiển thị trang trợ giúp, xem trước PDF, hộp đăng nhập và một số trang Settings. Gỡ có thể làm hỏng các luồng này và Windows Update có thể tự cài lại."
@@ -912,6 +972,10 @@
           "windowsmediaplayer"
         ]
       },
+      "label": {
+        "en": "Windows Media Player",
+        "vi": "Windows Media Player"
+      },
       "reason": {
         "en": "Legacy media stack. A few older applications and codecs still call into it for playback.",
         "vi": "Bộ media cũ. Một số ứng dụng và codec đời cũ vẫn gọi đến nó để phát nội dung."
@@ -929,6 +993,10 @@
           "windows.photos",
           "microsoft.photos"
         ]
+      },
+      "label": {
+        "en": "Microsoft Photos",
+        "vi": "Ảnh (Microsoft Photos)"
       },
       "reason": {
         "en": "Default image viewer and the handler for most picture file types. Removing it leaves images with no default viewer until you set another one.",

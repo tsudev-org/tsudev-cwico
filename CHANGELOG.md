@@ -41,6 +41,10 @@ release-of-day counter:
 
 ### Changed
 
+- Safety database 1.0.2: the 17 rules that had no display name (Skype,
+  Microsoft Edge, Photos, Cortana, Copilot and others) now carry one in both
+  languages, so the app groups them under a readable name. No rule changed
+  class or what it matches.
 - Colours come from the tsudev design tokens. Muted text was 3.6:1 on white,
   below WCAG AA; interactive edges now use the 3:1 `border-control`; safety
   badges and status colours use the status tokens. An automated WCAG 2.2 AA
