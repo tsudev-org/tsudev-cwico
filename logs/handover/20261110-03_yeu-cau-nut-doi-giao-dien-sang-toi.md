@@ -3,7 +3,7 @@
 - **Mã phiếu**: 20261110-03 (đặt là 02, đổi vì trùng số phiếu kết phiên 06)
 - **Từ**: phiên tsudev-c8 (repo `tsudev`) - **Đến**: phiên Claude của repo `tsudev-cwico`
 - **Thời điểm**: 10/11/2026
-- **Trạng thái**: ĐÓNG phần mã (10/11/2026, phiên tsudev-cwico-06); kiểm sau deploy chờ chủ dự án chạy `npm run deploy`
+- **Trạng thái**: ĐÓNG (10/11/2026, phiên tsudev-cwico-06; deploy bởi chủ dự án, phiên bản Worker 2e0cf2ba)
 - **Ủy quyền**: chủ dự án yêu cầu bổ sung nút đổi màu sáng/tối ở header website của mọi dự án hệ tsudev
   (chat 10/11/2026, phiên tsudev-c8).
 
@@ -66,4 +66,10 @@ trên tsudev.com để người dùng thấy một hệ sinh thái nhất quán.
 - Thử trình duyệt thật (Chromium, có gắn CSP của `_headers`): 20/20 bước đạt - đổi qua 4 lựa chọn, tải lại giữ
   chế độ, `data-theme` đã đúng trước khi stylesheet xuất hiện (không nháy), console sạch.
 - Lỗi tìm được khi thử: đặt script ngay sau `charset` thì meta `theme-color` chưa được đọc nên không đổi - đã dời.
-- Còn: chủ dự án deploy, rồi `curl -sI https://cwico.tsudev.com/ | grep -i content-security-policy` và mở trang thật.
+- Nghiệm thu sau deploy (10/11/2026): CSP thật vẫn `script-src 'self'`; `/js/theme.js` 200 `text/javascript`;
+  Chromium trên `https://cwico.tsudev.com/` (HĐH tối): mặc định `dark,system`; Sáng/Ấm/Tối/Theo hệ thống đều giữ
+  sau tải lại, `theme-color` đúng `#EEF4FB`/`#F6F1E6`/`#0F1B2D`.
+- Console CÓ lỗi CSP, nhưng KHÔNG do site: Cloudflare chèn ở tầng vùng `tsudev.com` một script nội tuyến
+  `window.__CF$cv$params` (JS Detections / Bot Fight Mode, băm đổi mỗi lần tải) và beacon Web Analytics. `dist/`
+  không có script nội tuyến (check-dist canh). Xử lý ở cấu hình vùng Cloudflare (tắt JS Detections và tự chèn Web
+  Analytics cho `cwico.tsudev.com`), KHÔNG nới CSP. Lỗi này có từ trước phiếu - xem phiếu 20261110-01.

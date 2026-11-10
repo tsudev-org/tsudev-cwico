@@ -10,7 +10,7 @@
 - [ ] **QU-STD-1 (phần còn lại)** Màu đã lấy từ `.standards/tokens/` (PR #42). Còn: chế độ Warm (UI chỉ có sáng/tối) và màu nút chính `--color-tsu-600` -> `primary`; cùng chờ TS-8.
 - [ ] **QU-STD-BRAND (phần còn lại)** Màu chữ "dev" ở `ui/src/components/Brand.tsx` (cam, 4,18:1 - hai lỗi axe duy nhất còn lại) lệch website (xanh) - chờ TS-8 ở `tsudev-standards`, chưa tự đổi. Ảnh đại diện tổ chức GitHub là việc cấp tổ chức `tsudev-org`.
 - [ ] **DEP-1 (phần còn lại)** Đã gộp mọi PR dependabot trừ #22 (nhóm tauri) - #59 đã thay nó; chủ dự án đóng #22. Cảnh báo bảo mật `glib < 0.20` (dependabot "cargo for glib" trượt mỗi lần) là phụ thuộc gtk3 của tauri trên Linux, chưa có bản vá, không vào bản Windows - đóng cảnh báo dạng "tolerable risk" hoặc chờ tauri lên gtk4.
-- [ ] **WEB-DEPLOY** Website có nút đổi giao diện (#58) nhưng chưa deploy: chủ dự án `cd website && npm ci && npm run deploy`, rồi kiểm theo phiếu `logs/handover/20261110-03_*.md` mục Nghiệm thu.
+- [ ] **CF-ZONE-1** Console `cwico.tsudev.com` có lỗi CSP do Cloudflare tự chèn script (`__CF$cv$params` của JS Detections/Bot Fight Mode + beacon Web Analytics). Chủ dự án tắt ở cấu hình vùng `tsudev.com`; KHÔNG nới CSP. Nút giao diện (#58) đã deploy và nghiệm thu.
 
 ## Đang thực hiện
 
