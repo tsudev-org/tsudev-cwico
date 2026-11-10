@@ -63,9 +63,10 @@ export function Button({
 }) {
   const styles: Record<ButtonVariant, React.CSSProperties> = {
     primary: {
-      background: "var(--color-tsu-600)",
-      color: "#fff",
-      borderColor: "var(--color-tsu-600)",
+      // Token primary + on-primary (QU-STD-1): Tối = tím #A970FF với mực đen, Sáng = #7C3AED với chữ trắng
+      background: "var(--primary)",
+      color: "var(--on-primary)",
+      borderColor: "var(--primary-hover)",
     },
     // Token danger + on-status: the old brand orange gave white text 4.2:1.
     danger: {
@@ -311,7 +312,7 @@ export function ProgressBar({ value }: { value?: number }) {
       <div
         className={`h-full rounded-full ${indeterminate ? "w-1/4 animate-sweep" : ""}`}
         style={{
-          background: "var(--color-tsu-500)",
+          background: "var(--primary)",
           width: indeterminate ? undefined : `${Math.round(value * 100)}%`,
           transition: indeterminate ? undefined : "width 200ms ease-out",
         }}

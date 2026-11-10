@@ -32,7 +32,7 @@ const lop = [
     <div class="khung mo-dau__luoi">
       <div>
         <span class="nhan">Phiên bản {ban.phienBan} · {ban.ngay}</span>
-        <h1>Gỡ phần mềm thừa trên Windows mà không làm hỏng máy</h1>
+        <h1>Gỡ phần mềm thừa trên Windows <span class="chu-tim">mà không làm hỏng máy</span></h1>
         <p class="mo-dau__phu">cwico đọc cả sáu nơi Windows giấu phần mềm đã cài, phân loại từng mục kèm lý do, rồi chỉ gỡ những gì bạn đã xem và đồng ý - sau khi đã tạo điểm khôi phục.</p>
         <div class="mo-dau__nut">
           {exe && <a class="nut nut--chinh" href={exe.url}>Tải bộ cài cho Windows (x64)</a>}
@@ -47,7 +47,7 @@ const lop = [
     </div>
   </section>
 
-  <section class="muc muc--nen" aria-labelledby="so-lieu">
+  <section class="muc" aria-labelledby="so-lieu">
     <div class="khung">
       <h2 id="so-lieu">Ba lớp bảo vệ giữa bạn và một chiếc máy không khởi động được</h2>
       <p class="muc__dan">Lỗi tệ nhất của một công cụ dọn Windows là máy không lên. cwico đặt ba lớp độc lập trước kết cục đó; mỗi lớp đều có kiểm thử tự động chạy trên mọi lần thay đổi mã.</p>
@@ -95,7 +95,7 @@ const lop = [
     </div>
   </section>
 
-  <section class="muc muc--nen" aria-labelledby="bon-buoc">
+  <section class="muc" aria-labelledby="bon-buoc">
     <div class="khung">
       <h2 id="bon-buoc">Bốn bước gỡ, sau khi đã có đường lui</h2>
       <p class="muc__dan">Trước bước gây thay đổi đầu tiên: tạo <strong>điểm khôi phục hệ thống</strong> (không tạo được thì hủy cả lượt chạy), xuất <strong>.reg</strong> mọi khóa sẽ đụng kèm tệp <code>restore-registry.cmd</code>, và ghi <strong>nhật ký giao dịch</strong> từng bước.</p>
@@ -130,7 +130,7 @@ const lop = [
     </div>
   </section>
 
-  <section class="muc muc--nen" aria-labelledby="nguon-goc">
+  <section class="muc" aria-labelledby="nguon-goc">
     <div class="khung">
       <h2 id="nguon-goc">Mã nguồn mở, chạy ngoại tuyến</h2>
       <p class="muc__dan">Mã nguồn công khai trên <a href={REPO_URL} target="_blank" rel="noopener noreferrer">GitHub</a>, giấy phép MIT, viết bằng Rust. Hạng sản phẩm C theo quy ước tsudev: không tài khoản, không đăng nhập; yêu cầu mạng duy nhất là kiểm tra bản cập nhật có chữ ký, mất mạng vẫn chạy bình thường.</p>

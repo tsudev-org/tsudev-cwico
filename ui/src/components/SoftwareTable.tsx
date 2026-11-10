@@ -198,7 +198,7 @@ export function SoftwareTable({
                   style={{
                     borderColor: "var(--border-subtle)",
                     background: isSelected
-                      ? "color-mix(in srgb, var(--color-tsu-500) 8%, transparent)"
+                      ? "color-mix(in srgb, var(--primary) 10%, transparent)"
                       : undefined,
                   }}
                 >
@@ -217,7 +217,7 @@ export function SoftwareTable({
                         checked={isSelected}
                         onChange={() => onToggle(item)}
                         aria-label={item.name}
-                        className="h-4 w-4 cursor-pointer accent-[var(--color-tsu-600)]"
+                        className="h-4 w-4 cursor-pointer accent-[var(--primary)]"
                       />
                     )}
                   </div>

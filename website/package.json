@@ -8,7 +8,8 @@
     "build": "node scripts/sync-content.mjs && astro build && node scripts/check-dist.mjs",
     "preview": "astro preview",
     "deploy": "npm run build && wrangler deploy",
-    "check:a11y": "node scripts/check-a11y.mjs"
+    "check:a11y": "node scripts/check-a11y.mjs",
+    "check:theme": "node scripts/check-theme.mjs"
   },
   "dependencies": {
     "astro": "7.4.7",

@@ -187,7 +187,10 @@ const vi = {
   "update.checkFailedBody":
     "Không kết nối được máy chủ cập nhật, phần mềm vẫn dùng bình thường. Sẽ kiểm tra lại ở lần khởi động sau.",
   "update.upToDate": "Đang dùng phiên bản mới nhất",
-  "theme.toggle": "Đổi giao diện sáng/tối",
+  "theme.group": "Giao diện",
+  "theme.light": "Sáng",
+  "theme.dark": "Tối",
+  "theme.system": "Hệ thống",
   "locale.toggle": "Đổi ngôn ngữ",
 } as const;
 
@@ -371,7 +374,10 @@ const en: Record<TranslationKey, string> = {
   "update.checkFailedBody":
     "The update server could not be reached, so the app started normally. It will check again next time.",
   "update.upToDate": "You are on the latest version",
-  "theme.toggle": "Toggle light/dark theme",
+  "theme.group": "Theme",
+  "theme.light": "Light",
+  "theme.dark": "Dark",
+  "theme.system": "System",
   "locale.toggle": "Change language",
 };
 

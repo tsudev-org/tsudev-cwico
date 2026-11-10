@@ -28,10 +28,22 @@ release-of-day counter:
 
 ### Added
 
-- Website `cwico.tsudev.com`: theme button in the header - Light, Warm, Dark or
-  Follow system, same as tsudev.com (stored under `tsudev-theme`). Applied by a
-  synchronous `/js/theme.js` in `<head>` before the stylesheet, so pages never
-  flash the wrong colours; the strict CSP (`script-src 'self'`) is unchanged.
+- Website `cwico.tsudev.com`: theme picker - Light, Dark or System, same as
+  tsudev.com (stored under `tsudev-theme`; an old `warm` value reads as Light),
+  as a radio group at the bottom of the footer next to `© tsudev`; Dark by
+  default. Applied by a synchronous `/js/theme.js` in `<head>` before the
+  stylesheet, so pages never flash the wrong colours; the strict CSP
+  (`script-src 'self'`) is unchanged.
+
+### Changed
+
+- tsudev ecosystem look (ticket `20261110-05`): pure black + violet palette,
+  Supabase-style header, buttons and cards, one seamless page background, on
+  the website and in the app.
+- App: the theme toggle is now Light / Dark / System (Dark by default, System
+  follows Windows live); the primary button, progress bar, checkboxes and the
+  selected row use the `primary` token instead of the local blue
+  `--color-tsu-*` scale (QU-STD-1).
 
 ### Fixed
 
