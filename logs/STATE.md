@@ -7,7 +7,7 @@
 
 - [ ] **WINGET-2** Manifest 26.11.1002 đã nộp: [microsoft/winget-pkgs#476024](https://github.com/microsoft/winget-pkgs/pull/476024) (10/11/2026, fork `tsudev-tsudev/winget-pkgs`). Theo dõi kiểm định tự động và CLA; gộp xong thì `winget install tsudev.cwico` ra bản mới. 10/11 phiên 06: 01-07, 09, 10 + CLA xanh; bước 08 (cài thử) NEUTRAL, nhãn **`Validation-Executable-Error`** (bộ kiểm không chạy được exe sau cài). Đã đối chiếu: SHA-256, ProductCode `{09A40823-...}`, ProductVersion khớp MSI; `cwico.exe` vào INSTALLDIR; app không đổi gì ở phần khởi động so với 26.8.19 (bản đó qua bước 08). Nhãn chỉ quản trị viên winget gỡ được - chủ dự án bình luận giải thích trên PR (GUI Tauri cần WebView2, không cần tham số), rồi chờ.
 - [ ] **QA-WIN-1** Chạy thử phần GHI trên Windows thật, có quyền Admin: `cwico plan --safe-only` (không đổi gì), rồi gỡ một mục An toàn trên máy ảo có snapshot - kiểm điểm khôi phục, `.reg`, nhật ký giao dịch. Chưa phiên bản nào làm việc này. Phiên 06 (10/11/2026) đã làm phần CHỈ ĐỌC trên Windows 11 25H2 của chủ dự án, không Admin, bằng CLI tải từ bản phát hành 26.11.1002 (SHA-256 khớp): `info`, `plan --safe-only` -> 30 mục / 63 bước trong 2,8 giây, không bị từ chối mục nào. Phát hiện `plan` giấu bước điểm khôi phục + sao lưu registry - sửa ở PR #55. Còn lại: phần GHI trên máy ảo có Admin.
-- [ ] **QU-STD-1 (phần còn lại)** Màu đã lấy từ `.standards/tokens/` (PR #42). Còn: chế độ Warm (UI chỉ có sáng/tối) và màu nút chính `--color-tsu-600` -> `primary`; cùng chờ TS-8.
+- [x] **QU-STD-1** XONG 10/11/2026 (phiếu `20261110-05`): chế độ Warm BỎ theo quyết định chủ dự án (chỉ Sáng/Tối/Hệ thống); nút chính, thanh tiến trình, ô chọn, hàng đang chọn dùng token `primary`. Màu chữ "tsu/dev" của wordmark vẫn theo QU-STD-BRAND/TS-8.
 - [ ] **QU-STD-BRAND (phần còn lại)** Màu chữ "dev" ở `ui/src/components/Brand.tsx` (cam, 4,18:1 - hai lỗi axe duy nhất còn lại) lệch website (xanh) - chờ TS-8 ở `tsudev-standards`, chưa tự đổi. Ảnh đại diện tổ chức GitHub là việc cấp tổ chức `tsudev-org`.
 - [ ] **DEP-1 (phần còn lại)** Mọi PR dependabot đã gộp/đóng (#22 thay bằng #59, đóng 10/11/2026). Chỉ còn cảnh báo bảo mật #1 `glib < 0.20` (GHSA-wrw7-89jp-8q8g): phụ thuộc gtk3 của tauri trên Linux, chưa có bản vá, không vào bản Windows - chủ dự án đóng dạng "tolerable risk" hoặc chờ tauri lên gtk4.
 - [ ] **CF-ZONE-1** Console `cwico.tsudev.com` có lỗi CSP do Cloudflare tự chèn script (`__CF$cv$params` của JS Detections/Bot Fight Mode + beacon Web Analytics). Chủ dự án tắt ở cấu hình vùng `tsudev.com`; KHÔNG nới CSP. Nút giao diện (#58) đã deploy và nghiệm thu.
@@ -19,6 +19,7 @@
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 10/11/2026 - Phiếu `20261110-05` (giao diện đen + tím kiểu Supabase): website (bộ chọn Sáng/Tối/Hệ thống ở chân trang thay menu 4 lựa chọn ở header của #58) + app Tauri (3 lựa chọn, mặc định Tối, bảng §2). Chi tiết: mục Kết quả của phiếu.
 - 10/11/2026 - Bộ quy ước nâng lên v3.3.0 (#63).
 - 10/11/2026 - Phiên 06 (tiếp): nút đổi giao diện Sáng/Ấm/Tối/Theo hệ thống cho website (#58, phiếu 20261110-03 từ phiên tsudev-c8); nâng nhóm tauri thay #22 (#59); chủ dự án gộp các PR dependabot còn lại.
 - 10/11/2026 - Phiên 06: `cwico plan` hiện bước điểm khôi phục + sao lưu registry (#55); phần chỉ đọc của QA-WIN-1 trên máy thật. Phiếu `logs/handover/20261110-02_ket-phien-06.md`.

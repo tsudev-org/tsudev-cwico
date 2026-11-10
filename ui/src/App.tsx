@@ -43,18 +43,22 @@ import { formatBytes } from "./i18n";
 type Tab = "software" | "tweaks" | "activity" | "about";
 
 const THEME_KEY = "cwico.theme";
+/** Phiếu 20261110-05: chỉ Sáng / Tối / Hệ thống, mặc định Tối; giá trị cũ không hợp lệ -> Tối. */
+type ThemeChoice = "light" | "dark" | "system";
+const THEME_CHOICES: ThemeChoice[] = ["light", "dark", "system"];
+const systemDark = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
 const LOCALE_KEY = "cwico.locale";
 
 export default function App() {
   const [locale, setLocale] = useState<Locale>(
     () => (localStorage.getItem(LOCALE_KEY) as Locale) ?? "vi",
   );
-  const [dark, setDark] = useState(
-    () =>
-      localStorage.getItem(THEME_KEY) === "dark" ||
-      (localStorage.getItem(THEME_KEY) === null &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches),
-  );
+  const [theme, setTheme] = useState<ThemeChoice>(() => {
+    const saved = localStorage.getItem(THEME_KEY);
+    return THEME_CHOICES.includes(saved as ThemeChoice) ? (saved as ThemeChoice) : "dark";
+  });
+  const [osDark, setOsDark] = useState(systemDark);
+  const dark = theme === "dark" || (theme === "system" && osDark);
   const [tab, setTab] = useState<Tab>("software");
 
   /** `null` while the check is still running - the app is not shown yet. */
@@ -95,8 +99,19 @@ export default function App() {
     document.documentElement.classList.toggle("dark", dark);
     // The ecosystem tokens key off data-theme; the `dark` class stays for Tailwind.
     document.documentElement.dataset.theme = dark ? "dark" : "light";
-    localStorage.setItem(THEME_KEY, dark ? "dark" : "light");
   }, [dark]);
+
+  useEffect(() => {
+    localStorage.setItem(THEME_KEY, theme);
+  }, [theme]);
+
+  // "Hệ thống": đổi theo Windows ngay, không cần mở lại app.
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => setOsDark(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(LOCALE_KEY, locale);
@@ -422,16 +437,44 @@ export default function App() {
         >
           {locale === "vi" ? "VI" : "EN"}
         </button>
-        <button
-          type="button"
-          onClick={() => setDark(!dark)}
-          title={t("theme.toggle")}
-          aria-label={t("theme.toggle")}
-          className="rounded-lg border px-2.5 py-1.5 text-sm"
-          style={{ borderColor: "var(--border-strong)" }}
+        <div
+          role="radiogroup"
+          aria-label={t("theme.group")}
+          className="flex items-center gap-0.5 rounded-full border p-0.5"
+          style={{ borderColor: "var(--border-control)", background: "var(--surface-panel)" }}
         >
-          {dark ? "☀" : "☾"}
-        </button>
+          {THEME_CHOICES.map((c, i) => (
+            <button
+              key={c}
+              type="button"
+              role="radio"
+              aria-checked={theme === c}
+              tabIndex={theme === c ? 0 : -1}
+              title={t(`theme.${c}`)}
+              aria-label={t(`theme.${c}`)}
+              onClick={() => setTheme(c)}
+              onKeyDown={(e) => {
+                const step = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
+                if (!step) return;
+                e.preventDefault();
+                const next = THEME_CHOICES[(i + step + THEME_CHOICES.length) % THEME_CHOICES.length] as ThemeChoice;
+                setTheme(next);
+                (e.currentTarget.parentElement?.querySelectorAll("button")[THEME_CHOICES.indexOf(next)] as HTMLButtonElement | undefined)?.focus();
+              }}
+              className="flex h-7 w-7 items-center justify-center rounded-full"
+              style={{
+                background: theme === c ? "var(--surface-hover)" : "transparent",
+                color: theme === c ? "var(--text-primary)" : "var(--text-muted)",
+              }}
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                {c === "light" && (<><circle cx="12" cy="12" r="4.2" /><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6" /></>)}
+                {c === "dark" && <path d="M20.5 14.3A8.5 8.5 0 1 1 9.7 3.5a6.8 6.8 0 0 0 10.8 10.8Z" />}
+                {c === "system" && (<><rect x="2.8" y="4.4" width="18.4" height="12.2" rx="1.6" /><path d="M8.6 20.2h6.8M12 16.6v3.6" /></>)}
+              </svg>
+            </button>
+          ))}
+        </div>
       </header>
 
       {/* ----------------------------------------------------------- body */}
@@ -499,7 +542,7 @@ export default function App() {
                   type="checkbox"
                   checked={deepScan}
                   onChange={(event) => setDeepScan(event.target.checked)}
-                  className="h-4 w-4 accent-[var(--color-tsu-600)]"
+                  className="h-4 w-4 accent-[var(--primary)]"
                 />
                 {t("scan.deep")}
               </label>

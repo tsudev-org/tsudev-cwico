@@ -1,5 +1,6 @@
 // Kiểm tra khả năng truy cập (ACCESSIBILITY.md của tsudev) bằng axe-core: mọi trang trong dist/,
-// mọi chế độ giao diện (Theo hệ thống ở hệ điều hành sáng và tối, Sáng, Ấm, Tối - khóa tsudev-theme của /js/theme.js)
+// mọi chế độ giao diện (khách mới = Tối, Sáng, Tối, Hệ thống ở hệ điều hành sáng và tối - khóa tsudev-theme của /js/theme.js,
+// phiếu 20261110-05; giá trị cũ "warm" đọc thành Sáng)
 // và một lượt giả lập tắt JavaScript (chặn /js/theme.js - tắt JS thật thì axe không chạy được); quy tắc WCAG 2.0/2.1/2.2 mức A và AA. Mỗi lượt có JS còn kiểm data-theme đúng chế độ
 // và không có lỗi console (vd. CSP chặn script).
 // Chạy sau `npm run build`: `npm run check:a11y` (CI: website.yml). Cần Chromium của Playwright:
@@ -54,12 +55,13 @@ const tags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 let total = 0;
 const list = pages(dist);
 const CHE_DO = [
-  { ten: 'system/light', scheme: 'light', luu: null, mongDoi: 'light' },
-  { ten: 'system/dark', scheme: 'dark', luu: null, mongDoi: 'dark' },
+  { ten: 'moi/may-sang', scheme: 'light', luu: null, mongDoi: 'dark' },
   { ten: 'light', scheme: 'dark', luu: 'light', mongDoi: 'light' },
-  { ten: 'warm', scheme: 'light', luu: 'warm', mongDoi: 'warm' },
   { ten: 'dark', scheme: 'light', luu: 'dark', mongDoi: 'dark' },
-  { ten: 'khong-js/dark', scheme: 'dark', luu: null, mongDoi: 'light', tatJs: true },
+  { ten: 'system/light', scheme: 'light', luu: 'system', mongDoi: 'light' },
+  { ten: 'system/dark', scheme: 'dark', luu: 'system', mongDoi: 'dark' },
+  { ten: 'warm-cu', scheme: 'dark', luu: 'warm', mongDoi: 'light' },
+  { ten: 'khong-js/may-sang', scheme: 'light', luu: null, mongDoi: 'dark', tatJs: true },
 ];
 for (const { ten: scheme, scheme: colorScheme, luu, mongDoi, tatJs } of CHE_DO) {
   const context = await browser.newContext({ colorScheme });

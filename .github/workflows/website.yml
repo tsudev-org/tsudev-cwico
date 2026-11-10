@@ -37,5 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Cài Chromium cho kiểm tra khả năng truy cập
         run: npx playwright install --with-deps chromium
-      - name: Kiểm tra khả năng truy cập (axe-core, WCAG 2.2 AA, sáng + tối)
+      - name: Kiểm tra khả năng truy cập (axe-core, WCAG 2.2 AA, Sáng + Tối + Hệ thống + không JS)
         run: npm run check:a11y
+      - name: Kiểm tra bộ chọn giao diện (3 lựa chọn, mặc định Tối, không nháy màu, bàn phím, CSP production)
+        run: npm run check:theme

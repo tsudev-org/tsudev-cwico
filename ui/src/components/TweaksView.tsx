@@ -141,7 +141,7 @@ export function TweaksView({ tweaks, locale, busy, outcomes, onApply }: Props) {
                         checked={selected.has(tweak.id)}
                         onChange={() => toggle(tweak.id)}
                         aria-label={tweak.title[locale]}
-                        className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[var(--color-tsu-600)]"
+                        className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[var(--primary)]"
                       />
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">

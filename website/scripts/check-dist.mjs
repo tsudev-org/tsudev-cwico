@@ -2,6 +2,7 @@
 // - mọi trang có title đúng khuôn, og:site_name = tsudev, canonical, description 120-160 ký tự (ECOSYSTEM_IDENTITY mục 2.2);
 // - không có script/CSS nội tuyến (CSP chặn); script ngoài chỉ được là /js/loc.js và /js/theme.js; không có on*="...";
 // - /js/theme.js (chống nháy màu) nạp đồng bộ trong <head>, trước mọi stylesheet; _headers giữ script-src 'self';
+// - bộ chọn giao diện Sáng/Tối/Hệ thống là radiogroup ở chân trang, mặc định Tối (phiếu 20261110-05);
 // - liên kết ra ngoài mở tab mới có rel="noopener noreferrer";
 // - mọi liên kết nội bộ (kể cả #neo) trỏ tới trang và id có thật;
 // - đủ bộ tài sản nhận diện bắt buộc (BRAND_ASSETS mục 12).
@@ -49,6 +50,12 @@ function kiemTra(tep, html) {
     const css = head.search(/<link[^>]*rel="stylesheet"/);
     if (css !== -1 && css < theme.index) loi.push(`${ten}: /js/theme.js phải đứng trước stylesheet`);
   }
+  // Bộ chọn giao diện (phiếu 20261110-05): đúng ba lựa chọn, radiogroup, nằm ở chân trang; mặc định Tối.
+  const luaChon = [...html.matchAll(/data-chon-giao-dien="([a-z]+)"/g)].map((m) => m[1]).join(',');
+  if (luaChon !== 'light,dark,system') loi.push(`${ten}: bộ chọn giao diện cần đúng light,dark,system: ${luaChon}`);
+  const viTriChon = html.indexOf('id="giao-dien"');
+  if (viTriChon < html.indexOf('<footer') || !/id="giao-dien" role="radiogroup" aria-label="Giao diện"/.test(html)) loi.push(`${ten}: bộ chọn giao diện phải là radiogroup trong <footer>`);
+  if (!/<html lang="vi" data-theme="dark">/.test(html)) loi.push(`${ten}: mặc định phải là data-theme="dark"`);
   if (/<style[\s>]/.test(html) || / style="/.test(html)) loi.push(`${ten}: có CSS nội tuyến (CSP chặn)`);
   if (/\son[a-z]+="/i.test(html)) loi.push(`${ten}: có trình xử lý sự kiện nội tuyến`);
   for (const a of html.matchAll(/<a [^>]*target="_blank"[^>]*>/g)) {
