@@ -24,7 +24,7 @@ release-of-day counter:
 `tools/version.py` is the only thing that should ever compute a version;
 `tools/test_version.py` checks the mapping still sorts in release order.
 
-## tsudev-cwico-v26.11.10 - 2026-11-10
+## tsudev-cwico-v26.11.10.2 - 2026-11-10
 
 > **Bản sửa lỗi quan trọng.** Ở bản 26.8.19, bấm *Quét hệ thống* trên máy
 > thật làm cả cửa sổ trắng trơn. Bản này sửa lỗi đó, thêm phân trang cho danh
@@ -33,6 +33,10 @@ release-of-day counter:
 > **A critical fix.** In 26.8.19, pressing *Scan* on a real machine blanked
 > the whole window. This release fixes it, pages long lists, and changes
 > nothing about what the tool will or will not remove.
+
+The first build of the day, `tsudev-cwico-v26.11.10`, stopped in the release
+pipeline before producing anything (see the last Fixed item below) and was
+never published. Its tag remains; this is the same change set.
 
 ### Added
 
