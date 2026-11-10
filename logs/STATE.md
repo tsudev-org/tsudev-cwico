@@ -9,7 +9,8 @@
 - [ ] **QA-WIN-1** Chạy thử phần GHI trên Windows thật, có quyền Admin: `cwico plan --safe-only` (không đổi gì), rồi gỡ một mục An toàn trên máy ảo có snapshot - kiểm điểm khôi phục, `.reg`, nhật ký giao dịch. Chưa phiên bản nào làm việc này. Phiên 06 (10/11/2026) đã làm phần CHỈ ĐỌC trên Windows 11 25H2 của chủ dự án, không Admin, bằng CLI tải từ bản phát hành 26.11.1002 (SHA-256 khớp): `info`, `plan --safe-only` -> 30 mục / 63 bước trong 2,8 giây, không bị từ chối mục nào. Phát hiện `plan` giấu bước điểm khôi phục + sao lưu registry - sửa ở PR #55. Còn lại: phần GHI trên máy ảo có Admin.
 - [ ] **QU-STD-1 (phần còn lại)** Màu đã lấy từ `.standards/tokens/` (PR #42). Còn: chế độ Warm (UI chỉ có sáng/tối) và màu nút chính `--color-tsu-600` -> `primary`; cùng chờ TS-8.
 - [ ] **QU-STD-BRAND (phần còn lại)** Màu chữ "dev" ở `ui/src/components/Brand.tsx` (cam, 4,18:1 - hai lỗi axe duy nhất còn lại) lệch website (xanh) - chờ TS-8 ở `tsudev-standards`, chưa tự đổi. Ảnh đại diện tổ chức GitHub là việc cấp tổ chức `tsudev-org`.
-- [ ] **DEP-1** PR dependabot đang mở (#17, #19, #21, #22, #27, #32, #33, #34, #39) và #31 (tools/version.py, đã có thay thế: lockfile UI giờ đồng bộ bằng `npm install --package-lock-only` khi phát hành): bộ phân loại tự động chặn phiên 05 gộp PR không do phiên tạo, kể cả từng cái. Cần chủ dự án gộp hoặc mở quyền.
+- [ ] **DEP-1 (phần còn lại)** Đã gộp mọi PR dependabot trừ #22 (nhóm tauri) - #59 đã thay nó; chủ dự án đóng #22. Cảnh báo bảo mật `glib < 0.20` (dependabot "cargo for glib" trượt mỗi lần) là phụ thuộc gtk3 của tauri trên Linux, chưa có bản vá, không vào bản Windows - đóng cảnh báo dạng "tolerable risk" hoặc chờ tauri lên gtk4.
+- [ ] **WEB-DEPLOY** Website có nút đổi giao diện (#58) nhưng chưa deploy: chủ dự án `cd website && npm ci && npm run deploy`, rồi kiểm theo phiếu `logs/handover/20261110-03_*.md` mục Nghiệm thu.
 
 ## Đang thực hiện
 
@@ -18,6 +19,7 @@
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 10/11/2026 - Phiên 06 (tiếp): nút đổi giao diện Sáng/Ấm/Tối/Theo hệ thống cho website (#58, phiếu 20261110-03 từ phiên tsudev-c8); nâng nhóm tauri thay #22 (#59); chủ dự án gộp các PR dependabot còn lại.
 - 10/11/2026 - Phiên 06: `cwico plan` hiện bước điểm khôi phục + sao lưu registry (#55); phần chỉ đọc của QA-WIN-1 trên máy thật. Phiếu `logs/handover/20261110-02_ket-phien-06.md`.
 - 10/11/2026 - **Phát hành `tsudev-cwico-v26.11.10.2`** (chủ dự án công bố). Kiểm đầu cuối trên máy thật: bản 26.8.19 đã cài hiện màn cập nhật bắt buộc, bấm Cập nhật -> tải, kiểm chữ ký, cài, khởi động lại thành 26.11.1002. Website triển khai lại; manifest winget 26.11.1002 (#51).
 - 10/11/2026 - Phiên 05 (tiếp): CLI vào tài sản phát hành (REL-2, #45); sửa quy trình phát hành gọi sai `-Version` (#45) và đọc CHANGELOG bằng cp1252 (#48); phân trang danh mục website (WEB-1, #46); CSDL an toàn 1.0.2 thêm tên cho 17 quy tắc (#46); ảnh chụp app thật vào README (#47); bản nháp `tsudev-cwico-v26.11.10.2` (#49).
