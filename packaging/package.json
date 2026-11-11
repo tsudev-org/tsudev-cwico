@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "name": "tsudev-cwico",
+  "winget": "tsudev.cwico",
+  "homepage": "https://cwico.tsudev.com",
+  "license": "MIT",
+  "description": {
+    "vi": "Bộ công cụ rà quét và gỡ bỏ phần mềm Windows chuyên sâu",
+    "en": "Deep Windows debloater and software removal toolkit"
+  },
+  "release": {
+    "repo": "tsudev-org/tsudev-cwico",
+    "tagRegex": "^tsudev-cwico-v\\d+\\.\\d+\\.\\d+\\.\\d+$"
+  },
+  "assets": {
+    "windows-x64": {
+      "file": "tsudev-cwico_{version}_x64-cli.exe",
+      "kind": "portable",
+      "bin": "tsudev-cwico_{version}_x64-cli.exe"
+    },
+    "windows-x64-installer": {
+      "file": "tsudev-cwico_{version}_x64-setup.exe",
+      "kind": "installer",
+      "installer": "nullsoft"
+    },
+    "windows-x64-msi": {
+      "file": "tsudev-cwico_{version}_x64_en-US.msi",
+      "kind": "installer",
+      "installer": "wix"
+    }
+  },
+  "channels": [
+    "winget"
+  ],
+  "planned": []
+}
