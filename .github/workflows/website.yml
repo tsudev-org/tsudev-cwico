@@ -31,6 +31,8 @@ jobs:
           cache: npm
           cache-dependency-path: website/package-lock.json
       - run: npm ci --no-audit --no-fund
+      - name: Tài sản thương hiệu khớp ảnh gốc (brand-assets --check)
+        run: node scripts/brand-assets.mjs --check
       - run: npm run build
         env:
           # Đọc bản phát hành mới nhất qua API GitHub; token chỉ để tránh giới hạn lượt gọi ẩn danh.
