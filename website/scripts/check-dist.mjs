@@ -80,7 +80,7 @@ for (const [ten, duong, href] of lienKet) {
 
 for (const f of ['favicon.ico', 'favicon-96x96.png', 'apple-touch-icon.png', 'og-image.png',
   'android-chrome-192x192.png', 'android-chrome-512x512.png', 'android-chrome-maskable-192x192.png',
-  'android-chrome-maskable-512x512.png', 'manifest.webmanifest', 'brand/logo-mark.png', '.well-known/security.txt']) {
+  'android-chrome-maskable-512x512.png', 'manifest.webmanifest', 'brand/logo-cwico-96.webp', '.well-known/security.txt']) {
   if (!existsSync(join(dist, f))) loi.push(`thiếu tài sản bắt buộc: ${f} (BRAND_ASSETS mục 12)`);
 }
 

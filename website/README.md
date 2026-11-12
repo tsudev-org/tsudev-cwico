@@ -12,7 +12,7 @@ và tự cài adapter SSR - xem chú thích trong `wrangler.jsonc`.
 * JavaScript duy nhất là `public/js/loc.js`: ô tìm và nhóm lọc ở trang Quy tắc, Tinh chỉnh (tìm không dấu, tô sáng đúng
   trên chữ có dấu, theo `SEARCH_AND_FILTER.md`). Tắt JS thì danh mục vẫn hiện đầy đủ.
 * Tài sản thương hiệu (`public/favicon*`, `android-chrome-*`, `og-image.png`, `brand/`) sinh bằng
-  `scripts/brand_assets.py` từ dây chuyền của repo `tsudev-org/tsudev`; không sửa tay.
+  `scripts/brand-assets.mjs` từ MỘT ảnh gốc `assets/brand/source/` (cấu hình `assets/brand/brand.json`); không sửa tay - đổi logo: thay ảnh gốc rồi `node website/scripts/brand-assets.mjs`, CI chạy `--check`.
 * Font Be Vietnam Pro tự host (SIL OFL 1.1); token màu sao nguyên văn từ `.standards/tokens/tokens.css`.
 * Header bảo mật (HSTS, CSP `default-src 'none'`, `X-Frame-Options: DENY`...) ở `public/_headers`; `security.txt` ở
   `public/.well-known/`. `scripts/check-dist.mjs` chạy sau mỗi lần build: title, `og:site_name`, canonical, độ dài mô
@@ -33,7 +33,7 @@ Sinh lại tài sản thương hiệu (khi thương hiệu đổi):
 
 ```bash
 python3 -m venv /tmp/v && /tmp/v/bin/pip install pillow
-/tmp/v/bin/python website/scripts/brand_assets.py --tsudev ~/projects/tsudev --fonts <thư mục BeVietnamPro-*.ttf>
+/tmp/v/bin/python website/`scripts/brand-assets.mjs` từ MỘT ảnh gốc `assets/brand/source/` (cấu hình `assets/brand/brand.json`); không sửa tay - đổi logo: thay ảnh gốc rồi `node website/scripts/brand-assets.mjs`, CI chạy `--check`.
 ```
 
 Ghi chú vận hành: vùng `tsudev.com` bật Cloudflare Web Analytics tự chèn `beacon.min.js`; CSP của trang này chặn nó (lỗi

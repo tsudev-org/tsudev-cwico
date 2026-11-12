@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 """
-Generate the full tsudev-cwico icon set from assets/brand/tsudev-logo.png.
+Generate the cwico APPLICATION icon set from the product logo master.
+
+Source: assets/brand/app/icon-1024.png - square, transparent, produced by
+website/scripts/brand-assets.mjs from assets/brand/source/logo-cwico.png (the one
+original; change the logo there, run that script, then this one).
 
 Outputs:
   app/src-tauri/icons/*        -> Tauri bundler (MSI / NSIS / MSIX / Linux / macOS)
-  ui/public/brand/*            -> icons consumed by the web UI
-  assets/brand/*               -> square + store-ready derivatives
+
+ui/public/brand/ is NOT touched: the Brand component there is the tsudev maker mark
+(tsudev logo + "tsudev" wordmark), not the product logo.
 
 Run:  python3 tools/gen_icons.py
 """
@@ -20,7 +25,7 @@ except ImportError:  # pragma: no cover
     sys.exit("Pillow is required:  pip install Pillow")
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SRC = ROOT / "assets" / "brand" / "tsudev-logo.png"
+SRC = ROOT / "assets" / "brand" / "app" / "icon-1024.png"
 
 TAURI_ICONS = ROOT / "app" / "src-tauri" / "icons"
 UI_BRAND = ROOT / "ui" / "public" / "brand"
@@ -61,15 +66,10 @@ def main() -> int:
     if not SRC.exists():
         sys.exit(f"missing source logo: {SRC}")
 
-    logo = Image.open(SRC).convert("RGBA")
-    square = squarify(logo)
-
-    for d in (TAURI_ICONS, UI_BRAND, BRAND):
-        d.mkdir(parents=True, exist_ok=True)
-
-    # Canonical square master, reused by the UI and the docs.
-    square.save(BRAND / "tsudev-logo-square.png")
-    written = 1
+    # The master is already square with breathing room (brand-assets.mjs).
+    square = squarify(Image.open(SRC).convert("RGBA"), pad_ratio=0)
+    TAURI_ICONS.mkdir(parents=True, exist_ok=True)
+    written = 0
 
     # --- Tauri PNG set -------------------------------------------------------
     for size in PNG_SIZES:
@@ -91,18 +91,6 @@ def main() -> int:
     for name, size in STORE_TILES.items():
         resize(square, size).save(TAURI_ICONS / name)
         written += 1
-
-    # --- Web UI assets -------------------------------------------------------
-    for size in (32, 64, 128, 256, 512):
-        resize(square, size).save(UI_BRAND / f"tsudev-logo-{size}.png")
-        written += 1
-    resize(square, 256).save(
-        UI_BRAND / "favicon.ico", format="ICO", sizes=[(16, 16), (32, 32), (48, 48)]
-    )
-    resize(square, 180).save(UI_BRAND / "apple-touch-icon.png")
-    # The UI's <img> source; 512px keeps it crisp on HiDPI at any rendered size.
-    resize(square, 512).save(UI_BRAND / "tsudev-logo.png")
-    written += 3
 
     print(f"generated {written} icon files from {SRC.relative_to(ROOT)}")
     return 0

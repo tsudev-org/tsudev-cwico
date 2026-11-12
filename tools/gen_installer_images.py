@@ -2,7 +2,7 @@
 """
 Generate the installer artwork (BRAND_ASSETS.md section 12: "Ảnh mở đầu bản cài").
 
-Source: assets/brand/tsudev-logo.png, the compact mark (owl only), an output
+Source: assets/brand/app/icon-1024.png, the cwico product logo (square, transparent), an output
 of the official tsudev brand pipeline (BRAND_ASSETS.md section 1). The image
 wordmark is NOT used: it carries its own small owl, so pairing it with the mark
 shows two owls, and cropping it would be the hand-cut BRAND_ASSETS forbids.
@@ -28,7 +28,7 @@ except ImportError:  # pragma: no cover
     sys.exit("Pillow is required:  pip install Pillow")
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-MARK = ROOT / "assets" / "brand" / "tsudev-logo.png"
+MARK = ROOT / "assets" / "brand" / "app" / "icon-1024.png"  # logo cwico (brand-assets.mjs)
 OUT = ROOT / "app" / "src-tauri" / "installer"
 
 WHITE = (255, 255, 255)

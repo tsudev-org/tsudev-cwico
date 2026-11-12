@@ -1,0 +1,27 @@
+{
+  "_ghi_chu": "Cấu hình dây chuyền thương hiệu (website/scripts/brand-assets.mjs). Đổi logo: thay ảnh ở source/, sửa tệp này nếu cần, chạy `node website/scripts/brand-assets.mjs`. CI chạy với --check.",
+  "id": "cwico",
+  "name": "cwico",
+  "source": "source/logo-cwico.png",
+  "mode": "no-white",
+  "padding": 0.06,
+  "solidBg": "#FFFFFF",
+  "ogGlow": "#0f3b4a",
+  "ogAccent": "#2dd4bf",
+  "domain": "cwico.tsudev.com",
+  "ogLines": [
+    "Rà quét sâu và gỡ phần mềm thừa",
+    "trên Windows - không làm hỏng máy"
+  ],
+  "appSizes": [
+    16,
+    24,
+    32,
+    48,
+    64,
+    128,
+    256,
+    512,
+    1024
+  ]
+}
